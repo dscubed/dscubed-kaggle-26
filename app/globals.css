@@ -1,26 +1,24 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
+/* ─── Forge color palette ─────────────────────────────────────────────────── */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-forge-bg:       #020906;
+  --color-forge-accent:   #23d191;
+  --color-forge-accent-dk:#128258;
+  --color-forge-muted:    #c2cfc9;
+  --color-forge-card-bg:  rgba(25, 60, 45, 0.4);
+  --color-forge-border:   rgba(255, 255, 255, 0.08);
+
+  --font-sans:    var(--font-inter);
+  --font-display: var(--font-anton);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
+/* ─── Base ────────────────────────────────────────────────────────────────── */
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), sans-serif;
+  background: radial-gradient(ellipse at 50% 45%, #1a4734 0%, #072217 50%, #020906 100%);
+  background-attachment: fixed;
+  color: #ffffff;
+  height: 100vh;
+  overflow: hidden;
 }

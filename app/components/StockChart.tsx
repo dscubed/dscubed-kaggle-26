@@ -1,0 +1,385 @@
+"use client";
+
+import { useEffect, useMemo, useRef, useState } from "react";
+import { SEED_A, SEED_B } from "./chartSeedData";
+
+/* ─── SVG canvas ─────────────────────────────────────────────────────────── */
+
+const SVG_W = 1400;
+const SVG_H = 750;
+const PAD = { top: 60, right: 110, bottom: 70, left: 40 };
+/** Drawable region inside padding */
+const CW = SVG_W - PAD.left - PAD.right;
+const CH = SVG_H - PAD.top - PAD.bottom;
+
+/* ─── Data stream ────────────────────────────────────────────────────────── */
+
+const TICK_MS = 800; // ms between incoming data points
+const MAX_HISTORY = 130; // rolling buffer length (points kept per series)
+const MIN_VALUE = 50; // lower clamp on all series values
+const WALK_SPREAD_A = 38; // random walk step amplitude for series A
+const WALK_SPREAD_B = 34; // random walk step amplitude for series B
+const WALK_DRIFT = 0.3; // net drift per tick (0 = perfectly balanced walk)
+
+/* ─── Camera ─────────────────────────────────────────────────────────────── */
+
+const CAMERA_MS = 80; // pan update interval in ms
+const CAMERA_LERP = 0.04; // interpolation factor (0 = frozen, 1 = instant)
+const CAMERA_WINDOW = 20; // recent-point window used to compute target range
+const CAMERA_MIN_PAD = 90; // whitespace below the data minimum
+const CAMERA_MAX_PAD = 230; // whitespace above the data maximum
+
+/* ─── Y axis ─────────────────────────────────────────────────────────────── */
+
+const Y_DIVISIONS = 8; // grid intervals (Y_DIVISIONS + 1 labels rendered)
+const Y_TICK_NOTCH = 8; // tick mark length in SVG px
+const Y_LABEL_DX = 12; // x gap between axis line and label text
+const Y_LABEL_DY = 5; // y offset to vertically centre label on tick
+const Y_LABEL_FONT = 15; // font size in px
+
+/* ─── X axis ─────────────────────────────────────────────────────────────── */
+
+const TICKS_PER_MONTH = 10; // data ticks represented by one month label
+const X_ARROW_HALF = 6; // half-height of the trailing arrowhead
+const X_ARROW_LEN = 14; // length of the trailing arrowhead
+const X_LABEL_DY = 22; // y offset of label below axis line
+const X_LABEL_FONT = 13; // font size in px
+
+/* ─── Presentation ───────────────────────────────────────────────────────── */
+
+const CHART_BLUR = "blur(1.2px)";
+const CHART_PERSPECTIVE = "1300px";
+const CHART_ROT_X = 50; // static X tilt in degrees
+const CHART_ROT_Y = -5; // static Y tilt in degrees
+const CHART_SCALE = 0.98;
+
+const MONTHS = [
+  "JAN",
+  "FEB",
+  "MAR",
+  "APR",
+  "MAY",
+  "JUN",
+  "JUL",
+  "AUG",
+  "SEP",
+  "OCT",
+  "NOV",
+  "DEC",
+];
+
+/* ─── Math helpers ───────────────────────────────────────────────────────── */
+/* Avoid spread-operator min/max which can stack-overflow on large arrays    */
+
+function arrayMin(arr: readonly number[]): number {
+  let m = Infinity;
+  for (const v of arr) if (v < m) m = v;
+  return m;
+}
+
+function arrayMax(arr: readonly number[]): number {
+  let m = -Infinity;
+  for (const v of arr) if (v > m) m = v;
+  return m;
+}
+
+/* ─── Geometry ───────────────────────────────────────────────────────────── */
+
+function toX(i: number, total: number): number {
+  return PAD.left + (i / (total - 1)) * CW;
+}
+
+function toY(v: number, min: number, max: number): number {
+  return PAD.top + CH - ((v - min) / (max - min)) * CH;
+}
+
+function buildPaths(pts: readonly number[], min: number, max: number) {
+  const n = pts.length;
+  const floor = SVG_H - PAD.bottom;
+  const line = pts
+    .map(
+      (v, i) =>
+        `${i === 0 ? "M" : "L"}${toX(i, n).toFixed(1)},${toY(v, min, max).toFixed(1)}`,
+    )
+    .join(" ");
+  return {
+    line,
+    area: `${line} L${toX(n - 1, n).toFixed(1)},${floor} L${PAD.left},${floor} Z`,
+  };
+}
+
+/* ─── Types ──────────────────────────────────────────────────────────────── */
+
+interface ChartState {
+  a: number[];
+  b: number[];
+  ticks: number;
+}
+
+interface ViewState {
+  min: number;
+  max: number;
+}
+
+/* ─── Initial state (deterministic — no Math.random at module level) ─────── */
+
+const INITIAL_CHART: ChartState = {
+  a: [...SEED_A],
+  b: [...SEED_B],
+  ticks: SEED_A.length,
+};
+
+const INITIAL_VIEW: ViewState = (() => {
+  const all = [...SEED_A, ...SEED_B];
+  const recent = [
+    ...SEED_A.slice(-CAMERA_WINDOW),
+    ...SEED_B.slice(-CAMERA_WINDOW),
+  ];
+  return {
+    min: Math.max(0, arrayMin(all) - CAMERA_MIN_PAD),
+    max: arrayMax(recent) + CAMERA_MAX_PAD,
+  };
+})();
+
+/* ─── Axis components ────────────────────────────────────────────────────── */
+
+function YAxis({ labels }: { labels: { val: number; y: number }[] }) {
+  const axisX = SVG_W - PAD.right;
+  return (
+    <g>
+      <line
+        x1={axisX}
+        y1={PAD.top}
+        x2={axisX}
+        y2={SVG_H - PAD.bottom}
+        stroke="rgba(255,255,255,0.1)"
+        strokeWidth="1"
+      />
+      {labels.map(({ val, y }) => (
+        <g key={val}>
+          <line
+            x1={axisX - Y_TICK_NOTCH}
+            y1={y}
+            x2={axisX}
+            y2={y}
+            stroke="rgba(255,255,255,0.2)"
+            strokeWidth="1"
+          />
+          <text
+            x={axisX + Y_LABEL_DX}
+            y={y + Y_LABEL_DY}
+            fill="rgba(255,255,255,0.6)"
+            fontSize={Y_LABEL_FONT}
+            fontFamily="Inter, sans-serif"
+          >
+            {val}
+          </text>
+        </g>
+      ))}
+    </g>
+  );
+}
+
+function XAxis({ labels }: { labels: { label: string; x: number }[] }) {
+  const axisY = SVG_H - PAD.bottom;
+  const axisRight = SVG_W - PAD.right;
+  return (
+    <g>
+      <line
+        x1={PAD.left}
+        y1={axisY}
+        x2={axisRight}
+        y2={axisY}
+        stroke="rgba(255,255,255,0.1)"
+        strokeWidth="1"
+      />
+      <path
+        d={`M${axisRight},${axisY - X_ARROW_HALF} L${axisRight + X_ARROW_LEN},${axisY} L${axisRight},${axisY + X_ARROW_HALF}`}
+        fill="rgba(255,255,255,0.35)"
+      />
+      {labels.map(({ label, x }) => (
+        <text
+          key={`${label}-${x}`}
+          x={x}
+          y={axisY + X_LABEL_DY}
+          fill="rgba(255,255,255,0.55)"
+          fontSize={X_LABEL_FONT}
+          fontFamily="Inter, sans-serif"
+          textAnchor="middle"
+        >
+          {label}
+        </text>
+      ))}
+    </g>
+  );
+}
+
+/* ─── StockChart ─────────────────────────────────────────────────────────── */
+
+export default function StockChart() {
+  const [chart, setChart] = useState<ChartState>(INITIAL_CHART);
+  const [view, setView] = useState<ViewState>(INITIAL_VIEW);
+
+  const chartRef = useRef<ChartState>(chart);
+  useEffect(() => {
+    chartRef.current = chart;
+  }, [chart]);
+
+  /* ── new data tick ── */
+  useEffect(() => {
+    const id = setInterval(() => {
+      setChart((prev) => {
+        const nextA = Math.max(
+          MIN_VALUE,
+          prev.a[prev.a.length - 1] +
+            (Math.random() - 0.5) * WALK_SPREAD_A +
+            WALK_DRIFT,
+        );
+        const nextB = Math.max(
+          MIN_VALUE,
+          prev.b[prev.b.length - 1] +
+            (Math.random() - 0.5) * WALK_SPREAD_B +
+            WALK_DRIFT,
+        );
+        return {
+          a: [...prev.a.slice(-MAX_HISTORY), nextA],
+          b: [...prev.b.slice(-MAX_HISTORY), nextB],
+          ticks: prev.ticks + 1,
+        };
+      });
+    }, TICK_MS);
+    return () => clearInterval(id);
+  }, []);
+
+  /* ── smooth camera pan ── */
+  useEffect(() => {
+    const id = setInterval(() => {
+      const { a, b } = chartRef.current;
+      if (!a.length) return;
+      const recent = [...a.slice(-CAMERA_WINDOW), ...b.slice(-CAMERA_WINDOW)];
+      const all = [...a, ...b];
+      const tMax = arrayMax(recent) + CAMERA_MAX_PAD;
+      const tMin = Math.max(0, arrayMin(all) - CAMERA_MIN_PAD);
+      setView((v) => ({
+        min: v.min + (tMin - v.min) * CAMERA_LERP,
+        max: v.max + (tMax - v.max) * CAMERA_LERP,
+      }));
+    }, CAMERA_MS);
+    return () => clearInterval(id);
+  }, []);
+
+  /* ── derived values ── */
+  const { a, b, ticks } = chart;
+  const n = a.length;
+
+  const { line: lineA, area: areaA } = useMemo(
+    () => buildPaths(a, view.min, view.max),
+    [a, view],
+  );
+  const { line: lineB, area: areaB } = useMemo(
+    () => buildPaths(b, view.min, view.max),
+    [b, view],
+  );
+
+  const yLabels = useMemo(() => {
+    const step = (view.max - view.min) / Y_DIVISIONS;
+    return Array.from({ length: Y_DIVISIONS + 1 }, (_, i) => ({
+      val: Math.round(view.min + step * i),
+      y: toY(view.min + step * i, view.min, view.max),
+    }));
+  }, [view]);
+
+  const xLabels = useMemo((): { label: string; x: number }[] => {
+    const startTick = ticks - n + 1;
+    const firstBoundary =
+      Math.ceil(startTick / TICKS_PER_MONTH) * TICKS_PER_MONTH;
+    const labels: { label: string; x: number }[] = [];
+    for (let t = firstBoundary; t <= ticks; t += TICKS_PER_MONTH) {
+      const idx = t - startTick;
+      if (idx >= 0 && idx < n)
+        labels.push({
+          label: MONTHS[Math.floor(t / TICKS_PER_MONTH) % 12],
+          x: toX(idx, n),
+        });
+    }
+    return labels;
+  }, [ticks, n]);
+
+  return (
+    <div
+      className="absolute inset-0 pointer-events-none"
+      style={{
+        filter: CHART_BLUR,
+        transform: `perspective(${CHART_PERSPECTIVE}) rotateX(${CHART_ROT_X}deg) rotateY(${CHART_ROT_Y}deg) scale(${CHART_SCALE})`,
+        transformOrigin: "50% 50%",
+      }}
+    >
+      <svg
+        viewBox={`0 0 ${SVG_W} ${SVG_H}`}
+        width="100%"
+        height="100%"
+        preserveAspectRatio="xMidYMid slice"
+      >
+        <defs>
+          <linearGradient id="gradB" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#4ade80" stopOpacity="0.42" />
+            <stop offset="100%" stopColor="#4ade80" stopOpacity="0.03" />
+          </linearGradient>
+          <linearGradient id="gradA" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#86efac" stopOpacity="0.22" />
+            <stop offset="100%" stopColor="#86efac" stopOpacity="0" />
+          </linearGradient>
+          {/* Left-edge fade — ease-out curve: fast rise at edge, smooth shoulder */}
+          <linearGradient
+            id="edgeFade"
+            x1="0"
+            y1="0"
+            x2="1"
+            y2="0"
+            gradientUnits="objectBoundingBox"
+          >
+            <stop offset="0%" stopColor="white" stopOpacity="0" />
+            <stop offset="8%" stopColor="white" stopOpacity="0.03" />
+            <stop offset="18%" stopColor="white" stopOpacity="0.10" />
+            <stop offset="30%" stopColor="white" stopOpacity="0.24" />
+            <stop offset="45%" stopColor="white" stopOpacity="0.46" />
+            <stop offset="60%" stopColor="white" stopOpacity="0.68" />
+            <stop offset="75%" stopColor="white" stopOpacity="0.87" />
+            <stop offset="85%" stopColor="white" stopOpacity="1" />
+            <stop offset="100%" stopColor="white" stopOpacity="1" />
+          </linearGradient>
+          <mask id="chartMask">
+            <rect
+              x="0"
+              y="0"
+              width={SVG_W}
+              height={SVG_H}
+              fill="url(#edgeFade)"
+            />
+          </mask>
+        </defs>
+
+        <g mask="url(#chartMask)">
+          <path d={areaB} fill="url(#gradB)" />
+          <path
+            d={lineB}
+            fill="none"
+            stroke="rgba(255,255,255,0.5)"
+            strokeWidth="2.5"
+            strokeLinejoin="round"
+          />
+          <path d={areaA} fill="url(#gradA)" />
+          <path
+            d={lineA}
+            fill="none"
+            stroke="rgba(255,255,255,0.9)"
+            strokeWidth="1.5"
+            strokeLinejoin="round"
+          />
+          <YAxis labels={yLabels} />
+          <XAxis labels={xLabels} />
+        </g>
+      </svg>
+    </div>
+  );
+}
