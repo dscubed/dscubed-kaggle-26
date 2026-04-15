@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { memo, useEffect, useMemo, useRef, useState } from "react";
 import { SEED_A, SEED_B } from "./chartSeedData";
 
 /* ─── SVG canvas ─────────────────────────────────────────────────────────── */
@@ -23,7 +23,6 @@ const WALK_DRIFT = 0.3; // net drift per tick (0 = perfectly balanced walk)
 
 /* ─── Camera ─────────────────────────────────────────────────────────────── */
 
-const CAMERA_MS = 80; // pan update interval in ms
 const CAMERA_LERP = 0.04; // interpolation factor (0 = frozen, 1 = instant)
 const CAMERA_WINDOW = 20; // recent-point window used to compute target range
 const CAMERA_MIN_PAD = 90; // whitespace below the data minimum
@@ -69,7 +68,6 @@ const MONTHS = [
 ];
 
 /* ─── Math helpers ───────────────────────────────────────────────────────── */
-/* Avoid spread-operator min/max which can stack-overflow on large arrays    */
 
 function arrayMin(arr: readonly number[]): number {
   let m = Infinity;
@@ -93,19 +91,29 @@ function toY(v: number, min: number, max: number): number {
   return PAD.top + CH - ((v - min) / (max - min)) * CH;
 }
 
-function buildPaths(pts: readonly number[], min: number, max: number) {
+/**
+ * Imperatively write both SVG paths into existing DOM elements.
+ * Called from rAF — never triggers React reconciliation.
+ */
+function writePaths(
+  pts: readonly number[],
+  min: number,
+  max: number,
+  lineEl: SVGPathElement,
+  areaEl: SVGPathElement,
+) {
   const n = pts.length;
   const floor = SVG_H - PAD.bottom;
-  const line = pts
-    .map(
-      (v, i) =>
-        `${i === 0 ? "M" : "L"}${toX(i, n).toFixed(1)},${toY(v, min, max).toFixed(1)}`,
-    )
-    .join(" ");
-  return {
-    line,
-    area: `${line} L${toX(n - 1, n).toFixed(1)},${floor} L${PAD.left},${floor} Z`,
-  };
+  if (n === 0) return;
+  let line = `M${Math.round(toX(0, n))},${Math.round(toY(pts[0], min, max))}`;
+  for (let i = 1; i < n; i++) {
+    line += ` L${Math.round(toX(i, n))},${Math.round(toY(pts[i], min, max))}`;
+  }
+  lineEl.setAttribute("d", line);
+  areaEl.setAttribute(
+    "d",
+    `${line} L${Math.round(toX(n - 1, n))},${floor} L${PAD.left},${floor} Z`,
+  );
 }
 
 /* ─── Types ──────────────────────────────────────────────────────────────── */
@@ -141,9 +149,13 @@ const INITIAL_VIEW: ViewState = (() => {
   };
 })();
 
-/* ─── Axis components ────────────────────────────────────────────────────── */
+/* ─── Axis components (memoized — only re-render when labels change) ─────── */
 
-function YAxis({ labels }: { labels: { val: number; y: number }[] }) {
+const YAxis = memo(function YAxis({
+  labels,
+}: {
+  labels: { val: number; y: number }[];
+}) {
   const axisX = SVG_W - PAD.right;
   return (
     <g>
@@ -178,9 +190,13 @@ function YAxis({ labels }: { labels: { val: number; y: number }[] }) {
       ))}
     </g>
   );
-}
+});
 
-function XAxis({ labels }: { labels: { label: string; x: number }[] }) {
+const XAxis = memo(function XAxis({
+  labels,
+}: {
+  labels: { label: string; x: number }[];
+}) {
   const axisY = SVG_H - PAD.bottom;
   const axisRight = SVG_W - PAD.right;
   return (
@@ -212,17 +228,37 @@ function XAxis({ labels }: { labels: { label: string; x: number }[] }) {
       ))}
     </g>
   );
-}
+});
 
 /* ─── StockChart ─────────────────────────────────────────────────────────── */
 
 export default function StockChart() {
+  // chart drives React renders (800 ms cadence)
   const [chart, setChart] = useState<ChartState>(INITIAL_CHART);
-  const [view, setView] = useState<ViewState>(INITIAL_VIEW);
-
   const chartRef = useRef<ChartState>(chart);
+
+  // view lives entirely in a ref — camera never triggers React re-renders
+  const viewRef = useRef<ViewState>(INITIAL_VIEW);
+
+  // axisView is a React-state snapshot of viewRef, updated only on data ticks
+  // so YAxis/XAxis re-render at 800 ms, not per camera frame
+  const [axisView, setAxisView] = useState<ViewState>(INITIAL_VIEW);
+
+  // Refs to SVG path DOM elements for imperative d-attribute updates
+  const pathAreaBRef = useRef<SVGPathElement>(null);
+  const pathLineBRef = useRef<SVGPathElement>(null);
+  const pathAreaARef = useRef<SVGPathElement>(null);
+  const pathLineARef = useRef<SVGPathElement>(null);
+
+  // No `d` prop needed in JSX — rAF fills in the correct path before first
+  // paint (rAF fires before browser paint), and React's reconciler never
+  // touches the attribute again because the static empty string prop never
+  // changes between renders.
+
+  // Keep chartRef in sync; snapshot view for axis on every data tick
   useEffect(() => {
     chartRef.current = chart;
+    setAxisView({ ...viewRef.current });
   }, [chart]);
 
   /* ── new data tick ── */
@@ -251,43 +287,60 @@ export default function StockChart() {
     return () => clearInterval(id);
   }, []);
 
-  /* ── smooth camera pan ── */
+  /* ── camera + path animation via rAF — zero React re-renders ── */
   useEffect(() => {
-    const id = setInterval(() => {
+    let rafId: number;
+
+    const tick = () => {
       const { a, b } = chartRef.current;
-      if (!a.length) return;
-      const recent = [...a.slice(-CAMERA_WINDOW), ...b.slice(-CAMERA_WINDOW)];
-      const all = [...a, ...b];
-      const tMax = arrayMax(recent) + CAMERA_MAX_PAD;
-      const tMin = Math.max(0, arrayMin(all) - CAMERA_MIN_PAD);
-      setView((v) => ({
-        min: v.min + (tMin - v.min) * CAMERA_LERP,
-        max: v.max + (tMax - v.max) * CAMERA_LERP,
-      }));
-    }, CAMERA_MS);
-    return () => clearInterval(id);
+      const n = a.length;
+
+      if (n > 0) {
+        // Compute target view with inline loops — no array allocations
+        let tMax = -Infinity;
+        const wStart = Math.max(0, n - CAMERA_WINDOW);
+        for (let i = wStart; i < n; i++) {
+          if (a[i] > tMax) tMax = a[i];
+          if (b[i] > tMax) tMax = b[i];
+        }
+        let tMin = Infinity;
+        for (let i = 0; i < n; i++) {
+          if (a[i] < tMin) tMin = a[i];
+          if (b[i] < tMin) tMin = b[i];
+        }
+        tMax += CAMERA_MAX_PAD;
+        tMin = Math.max(0, tMin - CAMERA_MIN_PAD);
+
+        const v = viewRef.current;
+        const newMin = v.min + (tMin - v.min) * CAMERA_LERP;
+        const newMax = v.max + (tMax - v.max) * CAMERA_LERP;
+        viewRef.current = { min: newMin, max: newMax };
+
+        // Imperatively push path strings into DOM — skips React reconciler
+        if (pathLineARef.current && pathAreaARef.current)
+          writePaths(a, newMin, newMax, pathLineARef.current, pathAreaARef.current);
+        if (pathLineBRef.current && pathAreaBRef.current)
+          writePaths(b, newMin, newMax, pathLineBRef.current, pathAreaBRef.current);
+      }
+
+      rafId = requestAnimationFrame(tick);
+    };
+
+    rafId = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(rafId);
   }, []);
 
-  /* ── derived values ── */
+  /* ── derived axis values (800 ms cadence via axisView) ── */
   const { a, b, ticks } = chart;
   const n = a.length;
 
-  const { line: lineA, area: areaA } = useMemo(
-    () => buildPaths(a, view.min, view.max),
-    [a, view],
-  );
-  const { line: lineB, area: areaB } = useMemo(
-    () => buildPaths(b, view.min, view.max),
-    [b, view],
-  );
-
   const yLabels = useMemo(() => {
-    const step = (view.max - view.min) / Y_DIVISIONS;
+    const step = (axisView.max - axisView.min) / Y_DIVISIONS;
     return Array.from({ length: Y_DIVISIONS + 1 }, (_, i) => ({
-      val: Math.round(view.min + step * i),
-      y: toY(view.min + step * i, view.min, view.max),
+      val: Math.round(axisView.min + step * i),
+      y: toY(axisView.min + step * i, axisView.min, axisView.max),
     }));
-  }, [view]);
+  }, [axisView]);
 
   const xLabels = useMemo((): { label: string; x: number }[] => {
     const startTick = ticks - n + 1;
@@ -312,6 +365,7 @@ export default function StockChart() {
         filter: CHART_BLUR,
         transform: `perspective(${CHART_PERSPECTIVE}) rotateX(${CHART_ROT_X}deg) rotateY(${CHART_ROT_Y}deg) scale(${CHART_SCALE})`,
         transformOrigin: "50% 50%",
+        willChange: "transform",
       }}
     >
       <svg
@@ -360,17 +414,21 @@ export default function StockChart() {
         </defs>
 
         <g mask="url(#chartMask)">
-          <path d={areaB} fill="url(#gradB)" />
+          {/* d="" — rAF fills the real path before first paint; static prop
+              means React's reconciler never overwrites the imperative updates */}
+          <path ref={pathAreaBRef} d="" fill="url(#gradB)" />
           <path
-            d={lineB}
+            ref={pathLineBRef}
+            d=""
             fill="none"
             stroke="rgba(255,255,255,0.5)"
             strokeWidth="2.5"
             strokeLinejoin="round"
           />
-          <path d={areaA} fill="url(#gradA)" />
+          <path ref={pathAreaARef} d="" fill="url(#gradA)" />
           <path
-            d={lineA}
+            ref={pathLineARef}
+            d=""
             fill="none"
             stroke="rgba(255,255,255,0.9)"
             strokeWidth="1.5"

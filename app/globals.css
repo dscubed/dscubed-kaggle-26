@@ -11,6 +11,7 @@
 
   --font-sans:    var(--font-inter);
   --font-display: var(--font-anton);
+  --font-mono:    var(--font-jetbrains);
 }
 
 /* ─── Base ────────────────────────────────────────────────────────────────── */
@@ -19,6 +20,5 @@ body {
   background: radial-gradient(ellipse at 50% 45%, #1a4734 0%, #072217 50%, #020906 100%);
   background-attachment: fixed;
   color: #ffffff;
-  height: 100vh;
-  overflow: hidden;
+  min-height: 100vh;
 }
