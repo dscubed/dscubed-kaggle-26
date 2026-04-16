@@ -19,15 +19,19 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Forge - Cybernetics Reimagined",
-  description: "Empowering you to enhance, extend, and evolve with technology like never before",
+  title: "DSCubed Kaggle Competition 2026",
+  description:
+    "DSCubed's flagship data science competition — Sem 1 2026. Open to all skill levels.",
 };
 
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${anton.variable} ${jetbrainsMono.variable}`}>
+    <html
+      lang="en"
+      className={`${inter.variable} ${anton.variable} ${jetbrainsMono.variable}`}
+    >
       <body>{children}</body>
     </html>
   );
