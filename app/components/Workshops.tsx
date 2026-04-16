@@ -171,7 +171,7 @@ function WorkshopCard({ workshop }: { workshop: Workshop }) {
 
 export default function Workshops() {
   return (
-    <section className="relative max-w-400 mx-auto px-12 pb-32 w-full">
+    <section id="workshops" className="relative max-w-400 mx-auto px-12 pb-32 w-full">
       <div className="flex items-center gap-3 mb-6">
         <span
           className="text-[11px] tracking-[3px] uppercase text-[#23d191]"

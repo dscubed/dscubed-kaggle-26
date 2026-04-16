@@ -24,6 +24,7 @@ const NOISE_BG = `url("data:image/svg+xml,${encodeURIComponent(
 export default function Home() {
   return (
     <>
+      <Navbar />
       <div className="relative flex flex-col h-screen max-w-400 mx-auto overflow-hidden">
         {/* Animated chart inside elliptical radial-gradient mask window */}
         <div
@@ -38,9 +39,6 @@ export default function Home() {
           <StockChart />
         </div>
 
-        <div className="relative z-20">
-          <Navbar />
-        </div>
         <div className="relative z-20 flex-1 flex flex-col min-h-0">
           <HeroContent />
         </div>

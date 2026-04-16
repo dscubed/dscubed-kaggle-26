@@ -1,6 +1,41 @@
-import Link from "next/link";
+"use client";
 
-const NAV_LINKS = ["Theme", "Prizes", "Timeline", "Workshops"] as const;
+import Link from "next/link";
+import { useEffect, useState } from "react";
+
+const NAV_LINKS = [
+  { label: "Theme", href: "#theme" },
+  { label: "Prizes", href: "#prizes" },
+  { label: "Timeline", href: "#timeline" },
+  { label: "Workshops", href: "#workshops" },
+] as const;
+
+const SECTION_IDS = NAV_LINKS.map((l) => l.href.slice(1));
+
+function useActiveSection() {
+  const [active, setActive] = useState<string>("");
+
+  useEffect(() => {
+    const observers: IntersectionObserver[] = [];
+
+    SECTION_IDS.forEach((id) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const obs = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) setActive(id);
+        },
+        { rootMargin: "-40% 0px -55% 0px", threshold: 0 }
+      );
+      obs.observe(el);
+      observers.push(obs);
+    });
+
+    return () => observers.forEach((o) => o.disconnect());
+  }, []);
+
+  return active;
+}
 
 function Logo() {
   return (
@@ -29,18 +64,29 @@ function Logo() {
   );
 }
 
-function NavLinks() {
+function NavLinks({ active }: { active: string }) {
   return (
     <nav className="flex gap-8">
-      {NAV_LINKS.map((label) => (
-        <a
-          key={label}
-          href="#"
-          className="text-white text-[11px] font-medium tracking-[1px] uppercase hover:text-[#23d191] transition-colors"
-        >
-          {label}
-        </a>
-      ))}
+      {NAV_LINKS.map(({ label, href }) => {
+        const id = href.slice(1);
+        const isActive = active === id;
+        return (
+          <a
+            key={label}
+            href={href}
+            className={`relative text-[11px] font-medium tracking-[1px] uppercase transition-colors pb-[3px] ${
+              isActive ? "text-[#23d191]" : "text-white hover:text-[#23d191]"
+            }`}
+          >
+            {label}
+            <span
+              className={`absolute bottom-0 left-0 h-px bg-[#23d191] transition-all duration-300 ${
+                isActive ? "w-full opacity-100" : "w-0 opacity-0"
+              }`}
+            />
+          </a>
+        );
+      })}
     </nav>
   );
 }
@@ -59,11 +105,12 @@ function ContactButton() {
 }
 
 export default function Navbar() {
+  const active = useActiveSection();
   return (
-    <header className="flex justify-between items-center py-4.5 border-b border-white/5 backdrop-blur-xl px-12">
+    <header className="fixed top-0 left-0 right-0 z-50 flex justify-between items-center py-4.5 border-b border-white/5 backdrop-blur-xl px-12 bg-black/20">
       <div className="flex items-center gap-12">
         <Logo />
-        <NavLinks />
+        <NavLinks active={active} />
       </div>
       <ContactButton />
     </header>

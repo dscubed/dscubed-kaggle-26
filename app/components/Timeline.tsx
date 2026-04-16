@@ -195,7 +195,7 @@ export default function Timeline() {
   const entries = tab === "event" ? EVENT_TIMELINE : COMPETITION_DAY;
 
   return (
-    <section className="relative max-w-400 mx-auto px-12 pb-32 w-full">
+    <section id="timeline" className="relative max-w-400 mx-auto px-12 pb-32 w-full">
       <div className="flex items-center gap-3 mb-6">
         <span
           className="text-[11px] tracking-[3px] uppercase text-[#23d191]"

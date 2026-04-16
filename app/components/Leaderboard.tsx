@@ -1,3 +1,92 @@
+"use client";
+
+import { useEffect, useState } from "react";
+
+function useUtcClock() {
+  const [time, setTime] = useState(() => new Date());
+  useEffect(() => {
+    const id = setInterval(() => setTime(new Date()), 1000);
+    return () => clearInterval(id);
+  }, []);
+  const pad = (n: number) => String(n).padStart(2, "0");
+  return `${pad(time.getUTCHours())}:${pad(time.getUTCMinutes())}:${pad(time.getUTCSeconds())}`;
+}
+
+function NoWifiIcon() {
+  return (
+    <svg
+      width="16"
+      height="14"
+      viewBox="0 0 16 14"
+      fill="none"
+      className="opacity-60"
+    >
+      {/* wifi arcs, dimmed */}
+      <path d="M8 10.5a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" fill="#ff5c7a" />
+      <path
+        d="M5.17 8.17a4 4 0 0 1 5.66 0"
+        stroke="#ff5c7a"
+        strokeWidth="1.2"
+        strokeLinecap="round"
+        opacity="0.5"
+      />
+      <path
+        d="M2.93 5.93a7 7 0 0 1 10.14 0"
+        stroke="#ff5c7a"
+        strokeWidth="1.2"
+        strokeLinecap="round"
+        opacity="0.25"
+      />
+      {/* strike-through slash */}
+      <line
+        x1="2"
+        y1="2"
+        x2="14"
+        y2="12"
+        stroke="#ff5c7a"
+        strokeWidth="1.4"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
+
+function BatteryIcon() {
+  // Mockup: battery at ~10% (critically low)
+  return (
+    <svg
+      width="22"
+      height="12"
+      viewBox="0 0 22 12"
+      fill="none"
+      className="opacity-70"
+    >
+      {/* body */}
+      <rect
+        x="0.5"
+        y="0.5"
+        width="18"
+        height="11"
+        rx="2"
+        stroke="#c2cfc9"
+        strokeWidth="1"
+      />
+      {/* terminal nub */}
+      <rect
+        x="19"
+        y="3.5"
+        width="2.5"
+        height="5"
+        rx="1"
+        fill="#c2cfc9"
+        opacity="0.5"
+      />
+      {/* fill — low red bar */}
+      <rect x="2" y="2" width="2.5" height="8" rx="1" fill="#ff5c7a" />
+    </svg>
+  );
+}
+
 type Row = {
   rank: number;
   team: string[];
@@ -34,21 +123,6 @@ const ROWS: Row[] = [
     team: ["E. Bianchi"],
     score: 0.8731,
     profit: 9876.44,
-    prize: null,
-  },
-  {
-    rank: 6,
-    team: ["H. Tanaka", "D. Park"],
-    score: 0.8502,
-    profit: 8211.09,
-    prize: null,
-  },
-  { rank: 7, team: ["N. Schmidt"], score: 0.839, profit: 6540.21, prize: null },
-  {
-    rank: 8,
-    team: ["O. Ivanov", "Y. Sato", "P. Rao", "V. Costa"],
-    score: 0.8124,
-    profit: 4123.88,
     prize: null,
   },
 ];
@@ -102,6 +176,26 @@ function LeaderboardRow({ row }: { row: Row }) {
   );
 }
 
+function LoadingRows() {
+  const [dots, setDots] = useState(".");
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setDots((d) => (d.length >= 3 ? "." : d + "."));
+    }, 2000);
+    return () => clearInterval(id);
+  }, []);
+
+  return (
+    <div
+      className="flex items-center justify-center py-3 text-[10px] border-[#23d191]/20 bg-black/15 text-[#23d191] tracking-[2px] uppercase"
+      style={FONT_MONO}
+    >
+      Loading <span className="w-[18px] text-left inline-block">{dots}</span>
+    </div>
+  );
+}
+
 function TickerStrip() {
   const tickers = [
     ["AAPL", "+1.24%"],
@@ -134,8 +228,9 @@ function TickerStrip() {
 }
 
 export default function Leaderboard() {
+  const utc = useUtcClock();
   return (
-    <section className="relative max-w-400 mx-auto px-12 pb-32 w-full">
+    <section id="prizes" className="relative max-w-400 mx-auto px-12 pb-32 w-full">
       <div className="flex items-center gap-3 mb-6">
         <span
           className="text-[11px] tracking-[3px] uppercase text-[#23d191]"
@@ -175,10 +270,9 @@ export default function Leaderboard() {
             <span className="text-white/30">·</span>
             <span className="text-white/50">DSCUBED::KAGGLE/26</span>
           </div>
-          <div className="flex items-center gap-4 text-[11px] text-white/40 tracking-[2px] uppercase">
-            <span>SESSION 04</span>
-            <span>·</span>
-            <span>UTC 14:22:07</span>
+          <div className="flex items-center gap-3">
+            <NoWifiIcon />
+            <BatteryIcon />
           </div>
         </div>
 
@@ -203,14 +297,20 @@ export default function Leaderboard() {
           ))}
         </div>
 
+        <LoadingRows />
+
         {/* Bezel footer */}
         <div
-          className="flex items-center justify-between px-5 py-2 border-t border-[#23d191]/20 bg-black/40 text-[10px] tracking-[2px] uppercase text-white/30"
+          className="flex items-center justify-between px-5 py-2 border-t border-[#23d191]/20 bg-black/40 text-[10px] tracking-[2px] uppercase"
           style={FONT_MONO}
         >
-          <span>PAGE 01 / 01</span>
-          <span>▲ AUTO-REFRESH · 5s</span>
-          <span>FEED OK</span>
+          <span className="text-white/30">PAGE 01 / 01</span>
+          <div className="flex items-center gap-2 text-white/40">
+            <span>SESSION 04</span>
+            <span className="text-white/20">·</span>
+            <span className="tabular-nums text-[#23d191]/70">UTC {utc}</span>
+          </div>
+          <span className="text-white/30">FEED OK</span>
         </div>
       </div>
     </section>

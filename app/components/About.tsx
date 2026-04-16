@@ -1,4 +1,5 @@
 import Image from "next/image";
+import HoverVideo from "./HoverVideo";
 
 const FONT_MONO = { fontFamily: "var(--font-mono)" };
 
@@ -146,10 +147,10 @@ function WhatIsKaggle() {
     <div className="grid md:grid-cols-[1fr_1fr] gap-10 mb-20">
       <div className="flex flex-col gap-4">
         <h3
-          className="text-4xl leading-[1] uppercase text-white mt-8"
+          className="text-6xl leading-[1] uppercase text-white mt-8"
           style={{ fontFamily: "var(--font-anton)" }}
         >
-          The Platform
+          WHAT IS <span className="text-[#23d191]">KAGGLE?</span>
         </h3>
         <p className="text-[15px] text-[#c2cfc9] leading-[1.7]">
           Kaggle is the world&apos;s leading platform for data science and
@@ -216,7 +217,7 @@ function Gallery() {
     <div className="mb-20">
       <div className="flex items-end justify-between mb-6 flex-wrap gap-3">
         <h3
-          className="text-4xl leading-[1] uppercase text-white"
+          className="text-6xl leading-[1] uppercase text-white"
           style={{ fontFamily: "var(--font-anton)" }}
         >
           Scenes From Previous Years
@@ -247,37 +248,51 @@ function Gallery() {
 function Theme() {
   return (
     <div>
-      <span
-        className="text-[11px] tracking-[2px] uppercase text-white/40 block mb-3"
-        style={FONT_MONO}
-      >
-        This year&apos;s theme
-      </span>
+      <div className="grid md:grid-cols-[1fr_1fr] gap-10 mb-20">
+        <div
+          className="relative rounded-md border border-[#23d191]/20 bg-[#02120a]/70 overflow-hidden aspect-[1.7]"
+          style={{
+            backgroundImage:
+              "repeating-linear-gradient(0deg, rgba(35,209,145,0.03) 0px, rgba(35,209,145,0.03) 1px, transparent 1px, transparent 3px)",
+          }}
+        >
+          <HoverVideo src="/theme_video.mp4" />
+        </div>
 
-      <h3
-        className="text-6xl leading-[0.95] uppercase text-white mb-6"
-        style={{ fontFamily: "var(--font-anton)" }}
-      >
-        Stock Market
-        <br />
-        <span className="text-[#23d191]">Prediction</span>
-      </h3>
+        <div className="flex flex-col">
+          <span
+            className="text-[11px] tracking-[2px] uppercase text-white/40 block mb-3"
+            style={FONT_MONO}
+          >
+            This year&apos;s theme
+          </span>
 
-      <p className="text-[15px] text-[#c2cfc9] leading-[1.7] max-w-[640px]">
-        This year&apos;s challenge puts you in the driver&apos;s seat of the
-        markets. Build models that forecast price movements, uncover signal in
-        the noise, and compete on real historical data. Whether you lean on
-        classic time-series methods, deep learning, or creative feature
-        engineering — the goal is simple: predict the market better than anyone
-        else in the room.
-      </p>
+          <h3
+            className="text-6xl leading-[0.95] uppercase text-white mb-6"
+            style={{ fontFamily: "var(--font-anton)" }}
+          >
+            Stock Market
+            <br />
+            <span className="text-[#23d191]">Prediction</span>
+          </h3>
+
+          <p className="text-[15px] text-[#c2cfc9] leading-[1.7] max-w-[640px]">
+            This year&apos;s challenge puts you in the driver&apos;s seat of the
+            markets. Build models that forecast price movements, uncover signal
+            in the noise, and compete on real historical data. Whether you lean
+            on classic time-series methods, deep learning, or creative feature
+            engineering — the goal is simple: predict the market better than
+            anyone else in the room.
+          </p>
+        </div>
+      </div>
     </div>
   );
 }
 
 export default function About() {
   return (
-    <section className="relative max-w-400 mx-auto px-12 py-24 w-full">
+    <section id="theme" className="relative flex flex-col gap-4 max-w-400 mx-auto px-12 py-24 w-full">
       <div className="flex items-center gap-3 mb-10">
         <span
           className="text-[11px] tracking-[3px] uppercase text-[#23d191]"
@@ -289,8 +304,8 @@ export default function About() {
       </div>
 
       <WhatIsKaggle />
-      <Gallery />
       <Theme />
+      <Gallery />
     </section>
   );
 }
