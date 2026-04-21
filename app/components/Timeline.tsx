@@ -151,7 +151,7 @@ function EntryRow({
   const dim = status === "CLOSED";
   return (
     <div
-      className={`relative grid grid-cols-[110px_1fr_auto] items-center gap-6 py-5 ${
+      className={`relative grid grid-cols-[80px_1fr_auto] sm:grid-cols-[110px_1fr_auto] items-center gap-4 sm:gap-6 py-5 ${
         last ? "" : "border-b border-white/5"
       } ${dim ? "opacity-40" : ""}`}
     >
@@ -195,7 +195,7 @@ export default function Timeline() {
   const entries = tab === "event" ? EVENT_TIMELINE : COMPETITION_DAY;
 
   return (
-    <section id="timeline" className="relative max-w-400 mx-auto px-12 pb-32 w-full">
+    <section id="timeline" className="relative max-w-400 mx-auto px-5 sm:px-8 md:px-12 pb-32 w-full">
       <div className="flex items-center gap-3 mb-6">
         <span
           className="text-[11px] tracking-[3px] uppercase text-[#23d191]"
@@ -208,7 +208,7 @@ export default function Timeline() {
 
       <div className="flex items-end justify-between flex-wrap gap-6 mb-8">
         <h2
-          className="text-6xl leading-[0.95] uppercase text-white"
+          className="text-3xl sm:text-4xl md:text-6xl leading-[0.95] uppercase text-white"
           style={{ fontFamily: "var(--font-anton)" }}
         >
           Event Timeline

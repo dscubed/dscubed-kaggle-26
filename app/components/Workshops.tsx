@@ -171,7 +171,7 @@ function WorkshopCard({ workshop }: { workshop: Workshop }) {
 
 export default function Workshops() {
   return (
-    <section id="workshops" className="relative max-w-400 mx-auto px-12 pb-32 w-full">
+    <section id="workshops" className="relative max-w-400 mx-auto px-5 sm:px-8 md:px-12 pb-32 w-full">
       <div className="flex items-center gap-3 mb-6">
         <span
           className="text-[11px] tracking-[3px] uppercase text-[#23d191]"
@@ -183,7 +183,7 @@ export default function Workshops() {
       </div>
 
       <h2
-        className="text-6xl leading-[0.95] uppercase text-white mb-4"
+        className="text-3xl sm:text-4xl md:text-6xl leading-[0.95] uppercase text-white mb-4"
         style={{ fontFamily: "var(--font-anton)" }}
       >
         Workshops

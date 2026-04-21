@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 const NAV_LINKS = [
   { label: "Theme", href: "#theme" },
@@ -64,7 +64,7 @@ function Logo() {
   );
 }
 
-function NavLinks({ active }: { active: string }) {
+function NavLinks({ active, onClickLink }: { active: string; onClickLink?: () => void }) {
   return (
     <nav className="flex gap-8">
       {NAV_LINKS.map(({ label, href }) => {
@@ -74,6 +74,7 @@ function NavLinks({ active }: { active: string }) {
           <a
             key={label}
             href={href}
+            onClick={onClickLink}
             className={`relative text-[11px] font-medium tracking-[1px] uppercase transition-colors pb-[3px] ${
               isActive ? "text-[#23d191]" : "text-white hover:text-[#23d191]"
             }`}
@@ -104,15 +105,128 @@ function ContactButton() {
   );
 }
 
+function HamburgerIcon({ open }: { open: boolean }) {
+  return (
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      className="text-white"
+    >
+      {open ? (
+        <>
+          <line x1="18" y1="6" x2="6" y2="18" />
+          <line x1="6" y1="6" x2="18" y2="18" />
+        </>
+      ) : (
+        <>
+          <line x1="3" y1="6" x2="21" y2="6" />
+          <line x1="3" y1="12" x2="21" y2="12" />
+          <line x1="3" y1="18" x2="21" y2="18" />
+        </>
+      )}
+    </svg>
+  );
+}
+
+function MobileDrawer({
+  open,
+  onClose,
+  active,
+}: {
+  open: boolean;
+  onClose: () => void;
+  active: string;
+}) {
+  useEffect(() => {
+    if (open) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [open]);
+
+  return (
+    <>
+      <div
+        className={`fixed inset-0 z-40 bg-black/60 backdrop-blur-sm transition-opacity duration-300 md:hidden ${
+          open ? "opacity-100" : "opacity-0 pointer-events-none"
+        }`}
+        onClick={onClose}
+      />
+      <div
+        className={`fixed top-0 right-0 z-50 h-full w-64 bg-[#02120a]/95 backdrop-blur-xl border-l border-white/10 transition-transform duration-300 ease-out md:hidden ${
+          open ? "translate-x-0" : "translate-x-full"
+        }`}
+      >
+        <div className="flex items-center justify-between px-5 py-4 border-b border-white/10">
+          <span className="text-[11px] tracking-[2px] uppercase text-[#23d191]">
+            Navigation
+          </span>
+          <button onClick={onClose} className="cursor-pointer" aria-label="Close menu">
+            <HamburgerIcon open />
+          </button>
+        </div>
+        <nav className="flex flex-col gap-1 p-4">
+          {NAV_LINKS.map(({ label, href }) => {
+            const id = href.slice(1);
+            const isActive = active === id;
+            return (
+              <a
+                key={label}
+                href={href}
+                onClick={onClose}
+                className={`block px-4 py-3 rounded-sm text-sm font-medium tracking-[1px] uppercase transition-colors ${
+                  isActive
+                    ? "text-[#23d191] bg-[#23d191]/10"
+                    : "text-white hover:text-[#23d191] hover:bg-white/[0.03]"
+                }`}
+              >
+                {label}
+              </a>
+            );
+          })}
+        </nav>
+        <div className="px-4 pt-2">
+          <ContactButton />
+        </div>
+      </div>
+    </>
+  );
+}
+
 export default function Navbar() {
   const active = useActiveSection();
+  const [drawerOpen, setDrawerOpen] = useState(false);
+
+  const closeDrawer = useCallback(() => setDrawerOpen(false), []);
+
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 flex justify-between items-center py-4.5 border-b border-white/5 backdrop-blur-xl px-12 bg-black/20">
-      <div className="flex items-center gap-12">
+    <>
+      <header className="fixed top-0 left-0 right-0 z-50 flex justify-between items-center py-3 md:py-4.5 border-b border-white/5 backdrop-blur-xl px-5 md:px-12 bg-black/20">
         <Logo />
-        <NavLinks active={active} />
-      </div>
-      <ContactButton />
-    </header>
+        <div className="hidden md:flex items-center gap-12">
+          <NavLinks active={active} />
+        </div>
+        <div className="hidden md:block">
+          <ContactButton />
+        </div>
+        <button
+          className="md:hidden cursor-pointer"
+          onClick={() => setDrawerOpen(true)}
+          aria-label="Open menu"
+        >
+          <HamburgerIcon open={false} />
+        </button>
+      </header>
+      <MobileDrawer open={drawerOpen} onClose={closeDrawer} active={active} />
+    </>
   );
 }

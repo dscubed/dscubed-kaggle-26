@@ -22,3 +22,20 @@ body {
   color: #ffffff;
   min-height: 100vh;
 }
+
+/* ─── StockChart — simplified on mobile ───────────────────────────────────── */
+.chart-perspective {
+  filter: none;
+  transform: scale(0.85);
+  transform-origin: 50% 50%;
+  will-change: transform;
+  opacity: 0.6;
+}
+
+@media (min-width: 640px) {
+  .chart-perspective {
+    filter: blur(1.2px);
+    transform: perspective(1300px) rotateX(50deg) rotateY(-5deg) scale(0.98);
+    opacity: 1;
+  }
+}

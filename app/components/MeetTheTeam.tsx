@@ -101,7 +101,7 @@ function DiscordIcon({ className }: { className?: string }) {
 
 export default function MeetTheTeam() {
   return (
-    <section className="relative max-w-400 mx-auto px-12 pb-32 w-full">
+    <section className="relative max-w-400 mx-auto px-5 sm:px-8 md:px-12 pb-32 w-full">
       <div className="flex items-center gap-3 mb-6">
         <span
           className="text-[11px] tracking-[3px] uppercase text-[#23d191]"
@@ -113,7 +113,7 @@ export default function MeetTheTeam() {
       </div>
 
       <h2
-        className="text-6xl leading-[0.95] uppercase text-white mb-4"
+        className="text-3xl sm:text-4xl md:text-6xl leading-[0.95] uppercase text-white mb-4"
         style={{ fontFamily: "var(--font-anton)" }}
       >
         Meet The Team
@@ -148,7 +148,7 @@ export default function MeetTheTeam() {
               {DIRECTOR.role}
             </span>
             <h3
-              className="text-4xl uppercase leading-[1] text-white"
+              className="text-3xl md:text-4xl uppercase leading-[1] text-white"
               style={{ fontFamily: "var(--font-anton)" }}
             >
               {DIRECTOR.name}
@@ -163,7 +163,7 @@ export default function MeetTheTeam() {
       </div>
 
       {/* Officers grid */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-10">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 mb-10">
         {OFFICERS.map((o) => (
           <OfficerCard key={o.name} member={o} />
         ))}

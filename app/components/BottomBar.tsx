@@ -62,7 +62,7 @@ export default function BottomBar() {
         Competition starts in
       </p>
       <p
-        className="text-[28px] tracking-[4px] tabular-nums text-white"
+        className="text-[22px] sm:text-[28px] tracking-[4px] tabular-nums text-white"
         style={{ fontFamily: "var(--font-anton)" }}
       >
         {countdown}

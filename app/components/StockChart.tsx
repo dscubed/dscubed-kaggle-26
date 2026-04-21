@@ -46,12 +46,6 @@ const X_LABEL_FONT = 13; // font size in px
 
 /* ─── Presentation ───────────────────────────────────────────────────────── */
 
-const CHART_BLUR = "blur(1.2px)";
-const CHART_PERSPECTIVE = "1300px";
-const CHART_ROT_X = 50; // static X tilt in degrees
-const CHART_ROT_Y = -5; // static Y tilt in degrees
-const CHART_SCALE = 0.98;
-
 const MONTHS = [
   "JAN",
   "FEB",
@@ -360,13 +354,7 @@ export default function StockChart() {
 
   return (
     <div
-      className="absolute inset-0 pointer-events-none"
-      style={{
-        filter: CHART_BLUR,
-        transform: `perspective(${CHART_PERSPECTIVE}) rotateX(${CHART_ROT_X}deg) rotateY(${CHART_ROT_Y}deg) scale(${CHART_SCALE})`,
-        transformOrigin: "50% 50%",
-        willChange: "transform",
-      }}
+      className="absolute inset-0 pointer-events-none chart-perspective"
     >
       <svg
         viewBox={`0 0 ${SVG_W} ${SVG_H}`}

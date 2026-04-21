@@ -150,7 +150,7 @@ function LeaderboardRow({ row }: { row: Row }) {
   const flash = row.rank === 1 ? "bg-[#23d191]/[0.04]" : "";
   return (
     <div
-      className={`grid grid-cols-[50px_1fr_120px_140px_120px] items-center gap-4 px-5 py-3 border-b border-white/5 ${flash} hover:bg-white/[0.02] transition-colors`}
+      className={`grid grid-cols-[50px_1fr_120px_140px_120px] min-w-[530px] items-center gap-4 px-5 py-3 border-b border-white/5 ${flash} hover:bg-white/[0.02] transition-colors`}
       style={FONT_MONO}
     >
       <span className={`text-[13px] ${tone}`}>
@@ -209,7 +209,7 @@ function TickerStrip() {
   ];
   return (
     <div
-      className="flex items-center gap-6 px-5 py-2 border-b border-white/10 overflow-hidden whitespace-nowrap text-[11px]"
+      className="flex items-center gap-6 px-5 py-2 border-b border-white/10 overflow-x-auto whitespace-nowrap text-[11px]"
       style={FONT_MONO}
     >
       {tickers.map(([sym, chg]) => {
@@ -230,7 +230,7 @@ function TickerStrip() {
 export default function Leaderboard() {
   const utc = useUtcClock();
   return (
-    <section id="prizes" className="relative max-w-400 mx-auto px-12 pb-32 w-full">
+    <section id="prizes" className="relative max-w-400 mx-auto px-5 sm:px-8 md:px-12 pb-32 w-full">
       <div className="flex items-center gap-3 mb-6">
         <span
           className="text-[11px] tracking-[3px] uppercase text-[#23d191]"
@@ -242,7 +242,7 @@ export default function Leaderboard() {
       </div>
 
       <h2
-        className="text-6xl leading-[0.95] uppercase text-white mb-8"
+        className="text-3xl sm:text-4xl md:text-6xl leading-[0.95] uppercase text-white mb-8"
         style={{ fontFamily: "var(--font-anton)" }}
       >
         Prizes & Leaderboard
@@ -280,7 +280,7 @@ export default function Leaderboard() {
 
         {/* Column headers */}
         <div
-          className="grid grid-cols-[50px_1fr_120px_140px_120px] items-center gap-4 px-5 py-2 border-b border-white/10 text-[10px] tracking-[2px] uppercase text-white/40"
+          className="grid grid-cols-[50px_1fr_120px_140px_120px] min-w-[530px] items-center gap-4 px-5 py-2 border-b border-white/10 text-[10px] tracking-[2px] uppercase text-white/40"
           style={FONT_MONO}
         >
           <span>#</span>
@@ -291,7 +291,7 @@ export default function Leaderboard() {
         </div>
 
         {/* Rows */}
-        <div>
+        <div className="overflow-x-auto">
           {ROWS.map((r) => (
             <LeaderboardRow key={r.rank} row={r} />
           ))}

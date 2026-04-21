@@ -147,7 +147,7 @@ function WhatIsKaggle() {
     <div className="grid md:grid-cols-[1fr_1fr] gap-10 mb-20">
       <div className="flex flex-col gap-4">
         <h3
-          className="text-6xl leading-[1] uppercase text-white mt-8"
+          className="text-3xl sm:text-4xl md:text-6xl leading-[1] uppercase text-white mt-8"
           style={{ fontFamily: "var(--font-anton)" }}
         >
           WHAT IS <span className="text-[#23d191]">KAGGLE?</span>
@@ -176,7 +176,7 @@ function WhatIsKaggle() {
 
 function GalleryTile({ src, index }: { src: string | null; index: number }) {
   const base =
-    "relative shrink-0 w-[320px] md:w-[420px] aspect-[4/3] snap-start rounded-sm border overflow-hidden";
+    "relative shrink-0 w-[260px] sm:w-[320px] md:w-[420px] aspect-[4/3] snap-start rounded-sm border overflow-hidden";
   if (src) {
     return (
       <div className={`${base} border-[#23d191]/25`}>
@@ -217,7 +217,7 @@ function Gallery() {
     <div className="mb-20">
       <div className="flex items-end justify-between mb-6 flex-wrap gap-3">
         <h3
-          className="text-6xl leading-[1] uppercase text-white"
+          className="text-3xl sm:text-4xl md:text-6xl leading-[1] uppercase text-white"
           style={{ fontFamily: "var(--font-anton)" }}
         >
           Scenes From Previous Years
@@ -231,7 +231,7 @@ function Gallery() {
       </div>
 
       <div
-        className="flex gap-4 overflow-x-auto snap-x snap-mandatory pb-4 -mx-12 px-12"
+        className="flex gap-4 overflow-x-auto snap-x snap-mandatory pb-4 -mx-5 px-5 sm:-mx-8 sm:px-8 md:-mx-12 md:px-12"
         style={{
           scrollbarWidth: "thin",
           scrollbarColor: "#23d19155 transparent",
@@ -268,7 +268,7 @@ function Theme() {
           </span>
 
           <h3
-            className="text-6xl leading-[0.95] uppercase text-white mb-6"
+            className="text-3xl sm:text-4xl md:text-6xl leading-[0.95] uppercase text-white mb-6"
             style={{ fontFamily: "var(--font-anton)" }}
           >
             Stock Market
@@ -292,7 +292,7 @@ function Theme() {
 
 export default function About() {
   return (
-    <section id="theme" className="relative flex flex-col gap-4 max-w-400 mx-auto px-12 py-24 w-full">
+    <section id="theme" className="relative flex flex-col gap-4 max-w-400 mx-auto px-5 sm:px-8 md:px-12 py-24 w-full">
       <div className="flex items-center gap-3 mb-10">
         <span
           className="text-[11px] tracking-[3px] uppercase text-[#23d191]"
