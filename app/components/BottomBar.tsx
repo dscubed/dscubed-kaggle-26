@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 /* ─── Config ─────────────────────────────────────────────────────────────── */
 
 /** Set this to the exact UTC ms timestamp when the competition goes live. */
-const START_DATE = new Date("2026-05-01T00:00:00Z").getTime();
+const START_DATE = new Date("2026-05-09T00:00:00Z").getTime();
 
 /* ─── Helpers ────────────────────────────────────────────────────────────── */
 
