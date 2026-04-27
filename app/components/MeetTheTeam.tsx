@@ -14,7 +14,7 @@ const DIRECTOR: Member = {
 };
 
 const OFFICERS: Member[] = [
-  { name: "Adam Lu", role: "Education Officer", photo: "people/adam-lu.png" },
+  { name: "Adam Lu", role: "Education Officer", photo: "people/adam-lu.webp" },
   {
     name: "Anhad Singh",
     role: "Education Officer",

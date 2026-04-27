@@ -4,20 +4,22 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 const NAV_LINKS = [
-  { label: "About", href: "#about" },
-  { label: "Prizes", href: "#prizes" },
-  { label: "Timeline", href: "#timeline" },
-  { label: "Workshops", href: "#workshops" },
+  { label: "About", href: "#about", sub: "Competition overview" },
+  { label: "Prizes", href: "#leaderboard", sub: "Prizes and Leaderboard" },
+  { label: "Timeline", href: "#timeline", sub: "Key dates" },
+  { label: "Workshops", href: "#workshops", sub: "Learning sessions" },
+  { label: "Team", href: "#team", sub: "Meet the organisers" },
+  { label: "FAQ", href: "#faq", sub: "Common questions" },
 ] as const;
 
 const SECTION_IDS = NAV_LINKS.map((l) => l.href.slice(1));
 
+const FONT_MONO = { fontFamily: "var(--font-mono)" };
+
 function useActiveSection() {
   const [active, setActive] = useState<string>("");
-
   useEffect(() => {
     const observers: IntersectionObserver[] = [];
-
     SECTION_IDS.forEach((id) => {
       const el = document.getElementById(id);
       if (!el) return;
@@ -30,19 +32,14 @@ function useActiveSection() {
       obs.observe(el);
       observers.push(obs);
     });
-
     return () => observers.forEach((o) => o.disconnect());
   }, []);
-
   return active;
 }
 
 function Logo() {
   return (
-    <Link
-      href="https://dscubed.org.au"
-      className="flex items-center gap-2 text-xl font-bold tracking-[0.5px]"
-    >
+    <Link href="https://dscubed.org.au" className="flex items-center gap-2">
       <svg
         width="135"
         height="157"
@@ -64,71 +61,6 @@ function Logo() {
   );
 }
 
-function NavLinks({ active }: { active: string }) {
-  return (
-    <nav className="hidden md:flex gap-8">
-      {NAV_LINKS.map(({ label, href }) => {
-        const id = href.slice(1);
-        const isActive = active === id;
-        return (
-          <a
-            key={label}
-            href={href}
-            className={`relative text-[11px] font-medium tracking-[1px] uppercase transition-colors pb-[3px] ${
-              isActive ? "text-[#23d191]" : "text-white hover:text-[#23d191]"
-            }`}
-          >
-            {label}
-            <span
-              className={`absolute bottom-0 left-0 h-px bg-[#23d191] transition-all duration-300 ${
-                isActive ? "w-full opacity-100" : "w-0 opacity-0"
-              }`}
-            />
-          </a>
-        );
-      })}
-    </nav>
-  );
-}
-
-function MobileMenu({
-  open,
-  onClose,
-  active,
-}: {
-  open: boolean;
-  onClose: () => void;
-  active: string;
-}) {
-  if (!open) return null;
-  return (
-    <div className="fixed inset-0 z-[60] md:hidden">
-      <div
-        className="absolute inset-0 bg-black/80 backdrop-blur-md"
-        onClick={onClose}
-      />
-      <nav className="relative z-10 flex flex-col gap-6 p-8 pt-20">
-        {NAV_LINKS.map(({ label, href }) => {
-          const id = href.slice(1);
-          const isActive = active === id;
-          return (
-            <a
-              key={label}
-              href={href}
-              onClick={onClose}
-              className={`text-2xl font-medium tracking-[2px] uppercase ${
-                isActive ? "text-[#23d191]" : "text-white"
-              }`}
-            >
-              {label}
-            </a>
-          );
-        })}
-      </nav>
-    </div>
-  );
-}
-
 function HamburgerButton({
   open,
   onClick,
@@ -139,66 +71,202 @@ function HamburgerButton({
   return (
     <button
       onClick={onClick}
-      className="md:hidden flex flex-col justify-center items-center gap-1.5 h-8 w-8 cursor-pointer"
+      className="flex flex-col justify-center items-center gap-[5px] h-9 w-9 cursor-pointer rounded-sm border border-white/10 hover:border-[#23d191]/40 transition-colors duration-200"
       aria-label="Toggle menu"
     >
       <span
-        className={`block h-[1.5px] w-5 bg-white transition-transform duration-200 ${
-          open ? "translate-y-[4.5px] rotate-45" : ""
-        }`}
+        className={`block h-[1.5px] w-4 bg-white transition-all duration-200 ${open ? "translate-y-[6.5px] rotate-45" : ""}`}
       />
       <span
-        className={`block h-[1.5px] w-5 bg-white transition-opacity duration-200 ${
-          open ? "opacity-0" : ""
-        }`}
+        className={`block h-[1.5px] w-4 bg-white transition-opacity duration-200 ${open ? "opacity-0" : ""}`}
       />
       <span
-        className={`block h-[1.5px] w-5 bg-white transition-transform duration-200 ${
-          open ? "-translate-y-[4.5px] -rotate-45" : ""
-        }`}
+        className={`block h-[1.5px] w-4 bg-white transition-all duration-200 ${open ? "-translate-y-[6.5px] -rotate-45" : ""}`}
       />
     </button>
   );
 }
 
-function ContactButton() {
+function NavButton() {
   return (
     <Link
       href="https://events.humanitix.com/dscubed-2026-kaggle-competition"
       target="_blank"
       rel="noopener noreferrer"
     >
-      <button
-        className="hidden sm:flex items-center gap-2 px-5 py-[10px] rounded-[4px] font-semibold text-[13px] text-black cursor-pointer"
-        style={{
-          background: "linear-gradient(135deg, #2ddb9b 0%, #159b6b 100%)",
-        }}
-      >
-        Sign up
+      <button className="flex items-center px-5 py-[9px] rounded-sm cursor-pointer text-[12px] tracking-wide font-mono font-bold border text-[#23d191] border-[#23d191]/25 bg-[#02120a]/90 transition-opacity duration-200 hover:opacity-90">
+        JOIN NOW
       </button>
     </Link>
   );
 }
 
-function useScrolled(threshold = 10) {
-  const [scrolled, setScrolled] = useState(false);
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > threshold);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, [threshold]);
-  return scrolled;
+function Sidebar({
+  open,
+  onClose,
+  active,
+}: {
+  open: boolean;
+  onClose: () => void;
+  active: string;
+}) {
+  return (
+    <>
+      {/* Backdrop */}
+      <div
+        className={`fixed inset-0 z-[60] transition-opacity duration-300 ${open ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}
+        style={{ background: "rgba(2,9,6,0.55)", backdropFilter: "blur(4px)" }}
+        onClick={onClose}
+      />
+
+      {/* Panel */}
+      <aside
+        className={`fixed top-0 right-0 h-full z-[70] flex flex-col transition-transform duration-300 ease-in-out ${open ? "translate-x-0" : "translate-x-full"}`}
+        style={{
+          width: "min(340px, 90vw)",
+          background:
+            "linear-gradient(160deg, rgba(10,28,20,0.98) 0%, rgba(2,9,6,0.99) 60%)",
+          borderLeft: "1px solid rgba(35,209,145,0.15)",
+          boxShadow:
+            "-8px 0 40px rgba(0,0,0,0.6), inset -1px 0 0 rgba(35,209,145,0.05)",
+        }}
+      >
+        {/* Scanline overlay */}
+        <div
+          className="absolute inset-0 pointer-events-none opacity-[0.03]"
+          style={{
+            backgroundImage:
+              "repeating-linear-gradient(0deg, rgba(255,255,255,1) 0px, rgba(255,255,255,1) 1px, transparent 1px, transparent 4px)",
+          }}
+        />
+
+        {/* Top bar */}
+        <div className="relative flex items-center justify-between px-6 py-5 border-b border-[#23d191]/10">
+          <div className="flex flex-col gap-0.5">
+            <span
+              className="text-[10px] tracking-[3px] uppercase text-[#23d191]/60"
+              style={FONT_MONO}
+            >
+              {"// KAGGLE_COMPETITION"}
+            </span>
+            <span
+              className="text-[9px] tracking-[2px] uppercase text-white/20"
+              style={FONT_MONO}
+            >
+              v2026 · DSCubed
+            </span>
+          </div>
+          <button
+            onClick={onClose}
+            className="h-8 w-8 flex items-center justify-center rounded-sm border border-white/10 hover:border-[#23d191]/40 text-white/50 hover:text-white transition-colors duration-150 cursor-pointer text-lg leading-none"
+          >
+            ×
+          </button>
+        </div>
+
+        {/* Nav items */}
+        <nav className="relative flex-1 flex flex-col px-4 py-6 gap-1 overflow-y-auto">
+          {NAV_LINKS.map(({ label, href, sub }, i) => {
+            const id = href.slice(1);
+            const isActive = active === id;
+            return (
+              <a
+                key={label}
+                href={href}
+                onClick={onClose}
+                className="group relative flex items-center gap-4 px-4 py-3.5 rounded-sm transition-all duration-200 hover:bg-[#23d191]/5"
+                style={isActive ? { background: "rgba(35,209,145,0.08)" } : {}}
+              >
+                {/* Active left bar */}
+                <span
+                  className="absolute left-0 top-2 bottom-2 w-[2px] rounded-full transition-all duration-200"
+                  style={{ background: isActive ? "#23d191" : "transparent" }}
+                />
+
+                {/* Index */}
+                <span
+                  className="text-[10px] w-6 shrink-0 text-right tabular-nums"
+                  style={{
+                    ...FONT_MONO,
+                    color: isActive ? "#23d191" : "rgba(255,255,255,0.2)",
+                  }}
+                >
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+
+                {/* Divider tick */}
+                <span
+                  className="w-px h-6 shrink-0"
+                  style={{
+                    background: isActive
+                      ? "rgba(35,209,145,0.4)"
+                      : "rgba(255,255,255,0.08)",
+                  }}
+                />
+
+                {/* Label + sub */}
+                <div className="flex flex-col gap-0.5">
+                  <span
+                    className="text-[13px] font-medium tracking-[0.5px] uppercase transition-colors duration-200"
+                    style={{
+                      color: isActive ? "#23d191" : "rgba(255,255,255,0.85)",
+                    }}
+                  >
+                    {label}
+                  </span>
+                  <span
+                    className="text-[10px] tracking-[1px]"
+                    style={{ ...FONT_MONO, color: "rgba(255,255,255,0.25)" }}
+                  >
+                    {sub}
+                  </span>
+                </div>
+
+                {/* Arrow */}
+                <span
+                  className="ml-auto text-xs transition-all duration-200 opacity-0 group-hover:opacity-100 -translate-x-1 group-hover:translate-x-0"
+                  style={{ color: "#23d191" }}
+                >
+                  →
+                </span>
+              </a>
+            );
+          })}
+        </nav>
+
+        {/* Bottom status bar */}
+        <div className="relative px-6 py-4 border-t border-[#23d191]/10 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <span className="h-1.5 w-1.5 rounded-full bg-[#23d191] animate-pulse" />
+            <span
+              className="text-[9px] tracking-[2px] uppercase text-white/25"
+              style={FONT_MONO}
+            >
+              Live
+            </span>
+          </div>
+          <span
+            className="text-[9px] tracking-[2px] uppercase text-white/20"
+            style={FONT_MONO}
+          >
+            Kaggle · 2026
+          </span>
+        </div>
+
+        {/* Corner brackets */}
+        <span className="absolute top-3 left-3 h-3 w-3 border-t border-l border-[#23d191]/30" />
+        <span className="absolute bottom-3 right-3 h-3 w-3 border-b border-r border-[#23d191]/30" />
+      </aside>
+    </>
+  );
 }
 
 export default function Navbar() {
   const active = useActiveSection();
-  const scrolled = useScrolled();
   const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
-    if (menuOpen) document.body.style.overflow = "hidden";
-    else document.body.style.overflow = "";
+    document.body.style.overflow = menuOpen ? "hidden" : "";
     return () => {
       document.body.style.overflow = "";
     };
@@ -206,26 +274,18 @@ export default function Navbar() {
 
   return (
     <>
-      <header
-        className={`fixed top-0 left-0 right-0 z-50 flex justify-between items-center py-4.5 border-b px-5 md:px-12 transition-all duration-300 ${
-          scrolled
-            ? "bg-black/20 backdrop-blur-md border-white/10"
-            : "bg-transparent border-transparent"
-        }`}
-      >
-        <div className="flex items-center gap-12">
-          <Logo />
-          <NavLinks active={active} />
-        </div>
-        <div className="flex items-center gap-4">
-          <ContactButton />
+      <header className="absolute top-0 left-0 right-0 z-50 flex justify-between items-center py-4 border-b border-transparent px-5 md:px-12">
+        <Logo />
+        <div className="flex items-center gap-3">
+          <NavButton />
           <HamburgerButton
             open={menuOpen}
             onClick={() => setMenuOpen(!menuOpen)}
           />
         </div>
       </header>
-      <MobileMenu
+
+      <Sidebar
         open={menuOpen}
         onClose={() => setMenuOpen(false)}
         active={active}

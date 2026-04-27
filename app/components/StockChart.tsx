@@ -116,6 +116,46 @@ function writePaths(
   );
 }
 
+/**
+ * Write two non-overlapping area fills that together cover the full chart area:
+ *   midAreaEl  — polygon between the two lines (lighter fill, upper region)
+ *   lowAreaEl  — polygon below the lower line  (darker fill, lower region)
+ * Because they never overlap, paint order doesn't matter and crossings are handled
+ * automatically each frame.
+ */
+function writeSplitAreas(
+  ptsA: readonly number[],
+  ptsB: readonly number[],
+  min: number,
+  max: number,
+  midAreaEl: SVGPathElement,
+  lowAreaEl: SVGPathElement,
+) {
+  const n = ptsA.length;
+  const floor = SVG_H - PAD.bottom;
+  if (n === 0) return;
+
+  // In SVG y increases downward, so visually-lower = numerically-larger y
+  // upperY = min(yA, yB) = whichever series is higher on screen
+  // lowerY = max(yA, yB) = whichever series is lower on screen
+
+  // Region between the two lines: trace upper edge forward, lower edge backward
+  let mid = `M${Math.round(toX(0, n))},${Math.round(Math.min(toY(ptsA[0], min, max), toY(ptsB[0], min, max)))}`;
+  for (let i = 1; i < n; i++)
+    mid += ` L${Math.round(toX(i, n))},${Math.round(Math.min(toY(ptsA[i], min, max), toY(ptsB[i], min, max)))}`;
+  for (let i = n - 1; i >= 0; i--)
+    mid += ` L${Math.round(toX(i, n))},${Math.round(Math.max(toY(ptsA[i], min, max), toY(ptsB[i], min, max)))}`;
+  mid += " Z";
+  midAreaEl.setAttribute("d", mid);
+
+  // Region below the lower line: lower edge forward, close to floor
+  let low = `M${Math.round(toX(0, n))},${Math.round(Math.max(toY(ptsA[0], min, max), toY(ptsB[0], min, max)))}`;
+  for (let i = 1; i < n; i++)
+    low += ` L${Math.round(toX(i, n))},${Math.round(Math.max(toY(ptsA[i], min, max), toY(ptsB[i], min, max)))}`;
+  low += ` L${Math.round(toX(n - 1, n))},${floor} L${PAD.left},${floor} Z`;
+  lowAreaEl.setAttribute("d", low);
+}
+
 /* ─── Types ──────────────────────────────────────────────────────────────── */
 
 interface ChartState {
@@ -275,13 +315,11 @@ export default function StockChart() {
   const [axisView, setAxisView] = useState<ViewState>(INITIAL_VIEW);
 
   // Refs to SVG path DOM elements for imperative d-attribute updates
-  const pathAreaBRef = useRef<SVGPathElement>(null);
-  const pathLineBRef = useRef<SVGPathElement>(null);
-  const pathAreaARef = useRef<SVGPathElement>(null);
   const pathLineARef = useRef<SVGPathElement>(null);
-
-  // Track which series is currently on top in the DOM so we only reorder on change
-  const aAboveBRef = useRef(false);
+  const pathLineBRef = useRef<SVGPathElement>(null);
+  // Split area fills — never overlap so paint order is irrelevant
+  const pathAreaMidRef = useRef<SVGPathElement>(null); // between the two lines
+  const pathAreaLowRef = useRef<SVGPathElement>(null); // below the lower line
 
   // Refs for the live-end dot groups (imperative position updates via rAF)
   const dotGroupARef = useRef<SVGGElement>(null);
@@ -376,41 +414,20 @@ export default function StockChart() {
         if (needsRedraw) {
           dataDirtyRef.current = false;
 
-          // Imperatively push path strings into DOM — skips React reconciler
-          if (pathLineARef.current && pathAreaARef.current)
-            writePaths(
-              a,
-              newMin,
-              newMax,
-              pathLineARef.current,
-              pathAreaARef.current,
-            );
-          if (pathLineBRef.current && pathAreaBRef.current)
-            writePaths(
-              b,
-              newMin,
-              newMax,
-              pathLineBRef.current,
-              pathAreaBRef.current,
-            );
-
-          // Fix area paint order: the lower series' area must render on top
-          // (it's the smaller area, so it won't occlude the upper series' fill).
-          // Without this, the upper series' larger area covers the lower series'.
-          const newAAboveB = a[n - 1] > b[n - 1];
-          if (newAAboveB !== aAboveBRef.current) {
-            aAboveBRef.current = newAAboveB;
-            const parent = pathAreaARef.current?.parentNode;
-            if (parent && pathAreaARef.current && pathAreaBRef.current) {
-              if (newAAboveB) {
-                // A higher → A's area larger → paint B's area on top
-                parent.insertBefore(pathAreaARef.current, pathAreaBRef.current);
-              } else {
-                // B higher → B's area larger → paint A's area on top
-                parent.insertBefore(pathAreaBRef.current, pathAreaARef.current);
-              }
-            }
-          }
+          // Write lines imperatively (bypasses React reconciler)
+          const writeLineOnly = (pts: readonly number[], el: SVGPathElement) => {
+            const np = pts.length;
+            if (np === 0) return;
+            let d = `M${Math.round(toX(0, np))},${Math.round(toY(pts[0], newMin, newMax))}`;
+            for (let i = 1; i < np; i++)
+              d += ` L${Math.round(toX(i, np))},${Math.round(toY(pts[i], newMin, newMax))}`;
+            el.setAttribute("d", d);
+          };
+          if (pathLineARef.current) writeLineOnly(a, pathLineARef.current);
+          if (pathLineBRef.current) writeLineOnly(b, pathLineBRef.current);
+          // Write non-overlapping split areas — no paint-order issues ever
+          if (pathAreaMidRef.current && pathAreaLowRef.current)
+            writeSplitAreas(a, b, newMin, newMax, pathAreaMidRef.current, pathAreaLowRef.current);
 
           // Move live-end dot groups to the trailing tip of each series
           if (dotGroupARef.current) {
@@ -525,26 +542,12 @@ export default function StockChart() {
         </defs>
 
         <g mask="url(#chartMask)">
-          {/* d="" — rAF fills the real path before first paint; static prop
-              means React's reconciler never overwrites the imperative updates */}
-          <path ref={pathAreaBRef} d="" fill="url(#gradB)" />
-          <path
-            ref={pathLineBRef}
-            d=""
-            fill="none"
-            stroke="rgba(255,255,255,0.5)"
-            strokeWidth="2.5"
-            strokeLinejoin="round"
-          />
-          <path ref={pathAreaARef} d="" fill="url(#gradA)" />
-          <path
-            ref={pathLineARef}
-            d=""
-            fill="none"
-            stroke="rgba(255,255,255,0.9)"
-            strokeWidth="1.5"
-            strokeLinejoin="round"
-          />
+          {/* Two non-overlapping fill regions — paint order is irrelevant */}
+          <path ref={pathAreaMidRef} d="" fill="url(#gradA)" />
+          <path ref={pathAreaLowRef} d="" fill="url(#gradB)" />
+          {/* Lines always above fills */}
+          <path ref={pathLineBRef} d="" fill="none" stroke="rgba(255,255,255,0.5)" strokeWidth="2.5" strokeLinejoin="round" />
+          <path ref={pathLineARef} d="" fill="none" stroke="rgba(255,255,255,0.9)" strokeWidth="1.5" strokeLinejoin="round" />
           <YAxis labels={yLabels} />
           <XAxis labels={xLabels} />
 

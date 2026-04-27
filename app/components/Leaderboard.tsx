@@ -12,77 +12,22 @@ function useUtcClock() {
   return `${pad(time.getUTCHours())}:${pad(time.getUTCMinutes())}:${pad(time.getUTCSeconds())}`;
 }
 
-function NoWifiIcon() {
+function WifiIcon() {
   return (
-    <svg
-      width="16"
-      height="14"
-      viewBox="0 0 16 14"
-      fill="none"
-      className="opacity-60"
-    >
-      {/* wifi arcs, dimmed */}
-      <path d="M8 10.5a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" fill="#ff5c7a" />
-      <path
-        d="M5.17 8.17a4 4 0 0 1 5.66 0"
-        stroke="#ff5c7a"
-        strokeWidth="1.2"
-        strokeLinecap="round"
-        opacity="0.5"
-      />
-      <path
-        d="M2.93 5.93a7 7 0 0 1 10.14 0"
-        stroke="#ff5c7a"
-        strokeWidth="1.2"
-        strokeLinecap="round"
-        opacity="0.25"
-      />
-      {/* strike-through slash */}
-      <line
-        x1="2"
-        y1="2"
-        x2="14"
-        y2="12"
-        stroke="#ff5c7a"
-        strokeWidth="1.4"
-        strokeLinecap="round"
-      />
+    <svg width="16" height="14" viewBox="0 0 16 14" fill="none" className="opacity-80">
+      <path d="M8 10.5a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" fill="#23d191" />
+      <path d="M5.17 8.17a4 4 0 0 1 5.66 0" stroke="#23d191" strokeWidth="1.2" strokeLinecap="round" opacity="0.75" />
+      <path d="M2.93 5.93a7 7 0 0 1 10.14 0" stroke="#23d191" strokeWidth="1.2" strokeLinecap="round" opacity="0.45" />
     </svg>
   );
 }
 
 function BatteryIcon() {
-  // Mockup: battery at ~10% (critically low)
   return (
-    <svg
-      width="22"
-      height="12"
-      viewBox="0 0 22 12"
-      fill="none"
-      className="opacity-70"
-    >
-      {/* body */}
-      <rect
-        x="0.5"
-        y="0.5"
-        width="18"
-        height="11"
-        rx="2"
-        stroke="#c2cfc9"
-        strokeWidth="1"
-      />
-      {/* terminal nub */}
-      <rect
-        x="19"
-        y="3.5"
-        width="2.5"
-        height="5"
-        rx="1"
-        fill="#c2cfc9"
-        opacity="0.5"
-      />
-      {/* fill — low red bar */}
-      <rect x="2" y="2" width="2.5" height="8" rx="1" fill="#ff5c7a" />
+    <svg width="22" height="12" viewBox="0 0 22 12" fill="none" className="opacity-80">
+      <rect x="0.5" y="0.5" width="18" height="11" rx="2" stroke="#23d191" strokeWidth="1" />
+      <rect x="19" y="3.5" width="2.5" height="5" rx="1" fill="#23d191" opacity="0.6" />
+      <rect x="2" y="2" width="14" height="8" rx="1" fill="#23d191" />
     </svg>
   );
 }
@@ -289,7 +234,7 @@ export default function Leaderboard() {
             </span>
           </div>
           <div className="flex items-center gap-3">
-            <NoWifiIcon />
+            <WifiIcon />
             <BatteryIcon />
           </div>
         </div>
