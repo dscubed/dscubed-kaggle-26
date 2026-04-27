@@ -26,8 +26,7 @@
 /* ─── Base ────────────────────────────────────────────────────────────────── */
 body {
   font-family: var(--font-sans), sans-serif;
-  background: radial-gradient(ellipse at 50% 45%, #1a4734 0%, #072217 50%, #020906 100%);
-  background-attachment: fixed;
+  background: #071e0f;
   color: #ffffff;
   min-height: 100vh;
 }

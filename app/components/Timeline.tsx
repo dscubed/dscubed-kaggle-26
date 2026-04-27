@@ -192,7 +192,7 @@ export default function Timeline() {
           className="text-[11px] tracking-[3px] uppercase text-[#23d191]"
           style={FONT_MONO}
         >
-          // SCHEDULE
+          {"// SCHEDULE"}
         </span>
         <span className="h-px flex-1 bg-[#23d191]/20" />
       </div>
@@ -206,7 +206,7 @@ export default function Timeline() {
         </h2>
 
         <div
-          className="inline-flex border border-[#23d191]/25 rounded-sm bg-black/40 p-1"
+          className="w-full inline-flex border border-[#23d191]/25 rounded-sm bg-black/40 p-1"
           style={FONT_MONO}
         >
           <button
@@ -246,7 +246,7 @@ export default function Timeline() {
           <span className="text-[#23d191]">
             {tab === "event" ? "EVENT_TIMELINE.FEED" : "COMP_DAY.FEED"}
           </span>
-          <span className="text-white/40">
+          <span className="flex gap-2 text-white/40">
             {entries.length} ENTRIES{" "}
             <span className="hidden sm:block">
               · SYNC {now === null ? "..." : "OK"}

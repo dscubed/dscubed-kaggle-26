@@ -289,9 +289,28 @@ export default function StockChart() {
   // touches the attribute again because the static empty string prop never
   // changes between renders.
 
+  // Cached all-points tMin (updated at data tick, not every rAF frame)
+  const cachedTMinRef = useRef<number>(
+    Math.min(arrayMin(SEED_A), arrayMin(SEED_B)),
+  );
+
+  // Set when new data arrives; cleared after a rAF redraw
+  const dataDirtyRef = useRef(true);
+
   // Keep chartRef in sync; snapshot view for axis on every data tick
   useEffect(() => {
     chartRef.current = chart;
+    dataDirtyRef.current = true;
+
+    // Recompute global min here (800 ms) instead of every rAF frame
+    const { a, b } = chart;
+    let tMin = Infinity;
+    for (let i = 0; i < a.length; i++) {
+      if (a[i] < tMin) tMin = a[i];
+      if (b[i] < tMin) tMin = b[i];
+    }
+    cachedTMinRef.current = tMin;
+
     setAxisView({ ...viewRef.current });
   }, [chart]);
 
@@ -330,60 +349,65 @@ export default function StockChart() {
       const n = a.length;
 
       if (n > 0) {
-        // Compute target view with inline loops — no array allocations
+        // tMax: scan only the recent CAMERA_WINDOW slice (fast)
         let tMax = -Infinity;
         const wStart = Math.max(0, n - CAMERA_WINDOW);
         for (let i = wStart; i < n; i++) {
           if (a[i] > tMax) tMax = a[i];
           if (b[i] > tMax) tMax = b[i];
         }
-        let tMin = Infinity;
-        for (let i = 0; i < n; i++) {
-          if (a[i] < tMin) tMin = a[i];
-          if (b[i] < tMin) tMin = b[i];
-        }
+        // tMin: use value cached at data-tick time (avoids full O(n) scan every frame)
+        const tMin = Math.max(0, cachedTMinRef.current - CAMERA_MIN_PAD);
         tMax += CAMERA_MAX_PAD;
-        tMin = Math.max(0, tMin - CAMERA_MIN_PAD);
 
         const v = viewRef.current;
         const newMin = v.min + (tMin - v.min) * CAMERA_LERP;
         const newMax = v.max + (tMax - v.max) * CAMERA_LERP;
+
+        // Skip expensive DOM writes when camera is settled and data is clean
+        const cameraDelta = Math.abs(newMin - v.min) + Math.abs(newMax - v.max);
+        const needsRedraw = dataDirtyRef.current || cameraDelta > 0.05;
+
         viewRef.current = { min: newMin, max: newMax };
 
-        // Imperatively push path strings into DOM — skips React reconciler
-        if (pathLineARef.current && pathAreaARef.current)
-          writePaths(
-            a,
-            newMin,
-            newMax,
-            pathLineARef.current,
-            pathAreaARef.current,
-          );
-        if (pathLineBRef.current && pathAreaBRef.current)
-          writePaths(
-            b,
-            newMin,
-            newMax,
-            pathLineBRef.current,
-            pathAreaBRef.current,
-          );
+        if (needsRedraw) {
+          dataDirtyRef.current = false;
 
-        // Move live-end dot groups to the trailing tip of each series
-        if (dotGroupARef.current) {
-          const cx = Math.round(toX(n - 1, n));
-          const cy = Math.round(toY(a[n - 1], newMin, newMax));
-          dotGroupARef.current.setAttribute(
-            "transform",
-            `translate(${cx},${cy})`,
-          );
-        }
-        if (dotGroupBRef.current) {
-          const cx = Math.round(toX(n - 1, n));
-          const cy = Math.round(toY(b[n - 1], newMin, newMax));
-          dotGroupBRef.current.setAttribute(
-            "transform",
-            `translate(${cx},${cy})`,
-          );
+          // Imperatively push path strings into DOM — skips React reconciler
+          if (pathLineARef.current && pathAreaARef.current)
+            writePaths(
+              a,
+              newMin,
+              newMax,
+              pathLineARef.current,
+              pathAreaARef.current,
+            );
+          if (pathLineBRef.current && pathAreaBRef.current)
+            writePaths(
+              b,
+              newMin,
+              newMax,
+              pathLineBRef.current,
+              pathAreaBRef.current,
+            );
+
+          // Move live-end dot groups to the trailing tip of each series
+          if (dotGroupARef.current) {
+            const cx = Math.round(toX(n - 1, n));
+            const cy = Math.round(toY(a[n - 1], newMin, newMax));
+            dotGroupARef.current.setAttribute(
+              "transform",
+              `translate(${cx},${cy})`,
+            );
+          }
+          if (dotGroupBRef.current) {
+            const cx = Math.round(toX(n - 1, n));
+            const cy = Math.round(toY(b[n - 1], newMin, newMax));
+            dotGroupBRef.current.setAttribute(
+              "transform",
+              `translate(${cx},${cy})`,
+            );
+          }
         }
       }
 
@@ -429,7 +453,7 @@ export default function StockChart() {
       }`}
       style={{
         filter: CHART_BLUR,
-        transform: `perspective(${CHART_PERSPECTIVE}) rotateX(${CHART_ROT_X}deg) rotateY(${CHART_ROT_Y}deg) scale(${CHART_SCALE})`,
+        transform: `perspective(${CHART_PERSPECTIVE}) rotateX(${CHART_ROT_X}deg) rotateY(${CHART_ROT_Y}deg) scale(${CHART_SCALE})${isMobile ? " translateY(-12%) scale(1.25)" : ""}`,
         transformOrigin: "50% 50%",
         willChange: "transform",
       }}

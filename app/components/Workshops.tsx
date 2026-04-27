@@ -180,7 +180,7 @@ export default function Workshops() {
           className="text-[11px] tracking-[3px] uppercase text-[#23d191]"
           style={FONT_MONO}
         >
-          // TRAINING_MODULES
+          {"// TRAINING_MODULES"}
         </span>
         <span className="h-px flex-1 bg-[#23d191]/20" />
       </div>
@@ -193,7 +193,8 @@ export default function Workshops() {
       </h2>
       <p className="text-[15px] text-[#c2cfc9] leading-[1.7] max-w-[640px] mb-10">
         Unlock your potential with our guided workshops! Missed the session? We
-        release the slides after each workshop so you can catch up.
+        release the slides and recordings after each workshop so you can catch
+        up.
       </p>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

@@ -11,27 +11,17 @@ import Footer from "./components/Footer";
 
 export default function Home() {
   return (
-    <>
+    <div
+      style={{
+        background:
+          "radial-gradient(ellipse 110% 35% at 50% 0%, #163929 0%, #0c2417 100%)",
+      }}
+    >
       <Navbar />
-      <div className="relative flex flex-col h-screen max-w-400 mx-auto" id="hero">
-        {/* Central green glow */}
-        <div
-          className="absolute inset-0 pointer-events-none z-0"
-          style={{
-            background:
-              "radial-gradient(ellipse 70% 60% at 50% 48%, rgba(35,209,145,0.13) 0%, rgba(35,209,145,0.05) 40%, transparent 75%)",
-          }}
-        />
-
-        {/* Side accent glows — visible on wide screens where edges feel empty */}
-        <div
-          className="absolute inset-0 pointer-events-none z-0"
-          style={{
-            background:
-              "radial-gradient(ellipse 38% 50% at 4% 72%, rgba(255,255,255,0.055) 0%, transparent 70%), radial-gradient(ellipse 38% 50% at 96% 28%, rgba(255,255,255,0.055) 0%, transparent 70%)",
-          }}
-        />
-
+      <div
+        className="relative flex flex-col h-screen max-w-400 mx-auto"
+        id="hero"
+      >
         {/* Chart — overflow-hidden clips the 3D-transformed canvas to hero bounds */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <div
@@ -58,6 +48,6 @@ export default function Home() {
       <MeetTheTeam />
       <FAQ />
       <Footer />
-    </>
+    </div>
   );
 }

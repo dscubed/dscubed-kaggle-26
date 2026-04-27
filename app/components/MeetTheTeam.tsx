@@ -1,3 +1,5 @@
+import { FaDiscord } from "react-icons/fa";
+
 type Member = {
   name: string;
   role: string;
@@ -40,7 +42,7 @@ const OFFICERS: Member[] = [
   },
 ];
 
-const DISCORD_URL = "https://discord.gg/dscubed";
+const DISCORD_URL = "https://discord.gg/Q3gZcPQV63";
 
 const FONT_MONO = { fontFamily: "var(--font-mono)" };
 
@@ -106,19 +108,6 @@ function OfficerCard({ member }: { member: Member }) {
   );
 }
 
-function DiscordIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      className={className}
-      viewBox="0 0 24 24"
-      fill="currentColor"
-      aria-hidden
-    >
-      <path d="M20.317 4.369A19.791 19.791 0 0 0 16.558 3.2a.074.074 0 0 0-.079.037c-.34.607-.719 1.398-.984 2.02a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.995-2.02.077.077 0 0 0-.079-.037 19.736 19.736 0 0 0-3.759 1.169.07.07 0 0 0-.032.027C2.533 8.045 1.9 11.605 2.21 15.121a.082.082 0 0 0 .031.056 19.9 19.9 0 0 0 5.993 3.03.077.077 0 0 0 .084-.027c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.105 13.1 13.1 0 0 1-1.872-.893.077.077 0 0 1-.008-.128c.126-.094.252-.192.371-.291a.074.074 0 0 1 .077-.01c3.927 1.793 8.18 1.793 12.061 0a.073.073 0 0 1 .078.009c.12.099.245.198.372.292a.077.077 0 0 1-.006.128 12.3 12.3 0 0 1-1.873.893.077.077 0 0 0-.04.106c.36.699.772 1.364 1.225 1.993a.076.076 0 0 0 .084.028 19.84 19.84 0 0 0 6.002-3.03.077.077 0 0 0 .032-.055c.5-4.063-.838-7.594-3.549-10.725a.061.061 0 0 0-.031-.028zM8.02 12.98c-1.182 0-2.157-1.085-2.157-2.419 0-1.333.955-2.418 2.157-2.418 1.21 0 2.176 1.094 2.157 2.418 0 1.334-.955 2.419-2.157 2.419zm7.976 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.954-2.418 2.157-2.418 1.21 0 2.176 1.094 2.157 2.418 0 1.334-.946 2.419-2.157 2.419z" />
-    </svg>
-  );
-}
-
 export default function MeetTheTeam() {
   return (
     <section className="relative max-w-400 mx-auto px-5 md:px-12 pb-16 md:pb-32 w-full">
@@ -127,7 +116,7 @@ export default function MeetTheTeam() {
           className="text-[11px] tracking-[3px] uppercase text-[#23d191]"
           style={FONT_MONO}
         >
-          // TEAM_ROSTER
+          {"// TEAM_ROSTER"}
         </span>
         <span className="h-px flex-1 bg-[#23d191]/20" />
       </div>
@@ -212,7 +201,7 @@ export default function MeetTheTeam() {
           className="inline-flex items-center gap-2 px-5 py-3 rounded-sm border border-[#23d191]/50 bg-[#23d191]/10 text-[#23d191] text-[12px] tracking-[2px] uppercase shadow-[inset_0_0_12px_rgba(35,209,145,0.25)] group-hover:shadow-[inset_0_0_20px_rgba(35,209,145,0.45)] transition-shadow"
           style={FONT_MONO}
         >
-          <DiscordIcon className="h-4 w-4" />
+          <FaDiscord className="h-4 w-4" />
           Join Discord
         </span>
       </a>

@@ -114,7 +114,7 @@ export default function FAQ() {
           className="text-[11px] tracking-[3px] uppercase text-[#23d191]"
           style={FONT_MONO}
         >
-          // FAQ.STREAM
+          {"// FAQ.STREAM"}
         </span>
         <span className="h-px flex-1 bg-[#23d191]/20" />
       </div>

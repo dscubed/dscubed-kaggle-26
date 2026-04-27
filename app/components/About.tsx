@@ -300,7 +300,7 @@ export default function About() {
           className="text-[11px] tracking-[3px] uppercase text-[#23d191]"
           style={FONT_MONO}
         >
-          // ABOUT
+          {"// ABOUT"}
         </span>
         <span className="h-px flex-1 bg-[#23d191]/20" />
       </div>
