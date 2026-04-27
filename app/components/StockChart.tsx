@@ -169,6 +169,15 @@ const YAxis = memo(function YAxis({
       />
       {labels.map(({ val, y }) => (
         <g key={val}>
+          {/* Horizontal grid line */}
+          <line
+            x1={PAD.left}
+            y1={y}
+            x2={axisX}
+            y2={y}
+            stroke="rgba(255,255,255,0.06)"
+            strokeWidth="1"
+          />
           <line
             x1={axisX - Y_TICK_NOTCH}
             y1={y}
@@ -214,17 +223,27 @@ const XAxis = memo(function XAxis({
         fill="rgba(255,255,255,0.35)"
       />
       {labels.map(({ label, x }) => (
-        <text
-          key={`${label}-${x}`}
-          x={x}
-          y={axisY + X_LABEL_DY}
-          fill="rgba(255,255,255,0.55)"
-          fontSize={X_LABEL_FONT}
-          fontFamily="Inter, sans-serif"
-          textAnchor="middle"
-        >
-          {label}
-        </text>
+        <g key={`${label}-${x}`}>
+          {/* Vertical grid line */}
+          <line
+            x1={x}
+            y1={PAD.top}
+            x2={x}
+            y2={axisY}
+            stroke="rgba(255,255,255,0.06)"
+            strokeWidth="1"
+          />
+          <text
+            x={x}
+            y={axisY + X_LABEL_DY}
+            fill="rgba(255,255,255,0.55)"
+            fontSize={X_LABEL_FONT}
+            fontFamily="Inter, sans-serif"
+            textAnchor="middle"
+          >
+            {label}
+          </text>
+        </g>
       ))}
     </g>
   );
@@ -260,6 +279,10 @@ export default function StockChart() {
   const pathLineBRef = useRef<SVGPathElement>(null);
   const pathAreaARef = useRef<SVGPathElement>(null);
   const pathLineARef = useRef<SVGPathElement>(null);
+
+  // Refs for the live-end dot groups (imperative position updates via rAF)
+  const dotGroupARef = useRef<SVGGElement>(null);
+  const dotGroupBRef = useRef<SVGGElement>(null);
 
   // No `d` prop needed in JSX — rAF fills in the correct path before first
   // paint (rAF fires before browser paint), and React's reconciler never
@@ -344,6 +367,24 @@ export default function StockChart() {
             pathLineBRef.current,
             pathAreaBRef.current,
           );
+
+        // Move live-end dot groups to the trailing tip of each series
+        if (dotGroupARef.current) {
+          const cx = Math.round(toX(n - 1, n));
+          const cy = Math.round(toY(a[n - 1], newMin, newMax));
+          dotGroupARef.current.setAttribute(
+            "transform",
+            `translate(${cx},${cy})`,
+          );
+        }
+        if (dotGroupBRef.current) {
+          const cx = Math.round(toX(n - 1, n));
+          const cy = Math.round(toY(b[n - 1], newMin, newMax));
+          dotGroupBRef.current.setAttribute(
+            "transform",
+            `translate(${cx},${cy})`,
+          );
+        }
       }
 
       rafId = requestAnimationFrame(tick);
@@ -461,6 +502,46 @@ export default function StockChart() {
           />
           <YAxis labels={yLabels} />
           <XAxis labels={xLabels} />
+
+          {/* Live-end dot — series B (#4ade80) */}
+          <g ref={dotGroupBRef} transform="translate(0,0)">
+            <circle r="5" fill="none" stroke="#4ade80" strokeWidth="1.5">
+              <animate
+                attributeName="r"
+                values="5;20"
+                dur="1.6s"
+                repeatCount="indefinite"
+              />
+              <animate
+                attributeName="opacity"
+                values="0.7;0"
+                dur="1.6s"
+                repeatCount="indefinite"
+              />
+            </circle>
+            <circle r="4" fill="#4ade80" opacity="0.95" />
+          </g>
+
+          {/* Live-end dot — series A (#86efac) */}
+          <g ref={dotGroupARef} transform="translate(0,0)">
+            <circle r="4" fill="none" stroke="#86efac" strokeWidth="1.5">
+              <animate
+                attributeName="r"
+                values="4;16"
+                dur="1.6s"
+                begin="0.5s"
+                repeatCount="indefinite"
+              />
+              <animate
+                attributeName="opacity"
+                values="0.6;0"
+                dur="1.6s"
+                begin="0.5s"
+                repeatCount="indefinite"
+              />
+            </circle>
+            <circle r="3" fill="#86efac" opacity="0.9" />
+          </g>
         </g>
       </svg>
     </div>

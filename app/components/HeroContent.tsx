@@ -44,15 +44,6 @@ function CTAButton() {
 export default function HeroContent() {
   return (
     <main className="relative flex-1 flex flex-col items-center text-center px-5 md:px-12 py-4">
-      {/* Vignette — keeps text readable against the chart */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background:
-            "radial-gradient(ellipse 75% 65% at 50% 50%, rgba(2,9,6,0.5) 0%, rgba(2,9,6,0.05) 100%)",
-        }}
-      />
-
       {/* Foreground text — centred in remaining space */}
       <div className="relative z-10 flex flex-1 flex-col items-center justify-center gap-3">
         <Heading />
