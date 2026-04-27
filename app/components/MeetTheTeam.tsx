@@ -8,16 +8,36 @@ type Member = {
 const DIRECTOR: Member = {
   name: "Stanley Zaranski",
   role: "Education Director",
-  photo: null,
+  photo: "people/stanley-zaranski.png",
 };
 
 const OFFICERS: Member[] = [
-  { name: "Officer One", role: "Education Officer", photo: null },
-  { name: "Officer Two", role: "Education Officer", photo: null },
-  { name: "Officer Three", role: "Education Officer", photo: null },
-  { name: "Officer Four", role: "Education Officer", photo: null },
-  { name: "Officer Five", role: "Education Officer", photo: null },
-  { name: "Officer Six", role: "Education Officer", photo: null },
+  { name: "Adam Lu", role: "Education Officer", photo: "people/adam-lu.png" },
+  {
+    name: "Anhad Singh",
+    role: "Education Officer",
+    photo: "people/anhad-singh.png",
+  },
+  {
+    name: "Daniel Nam",
+    role: "Education Officer",
+    photo: "people/daniel-nam.png",
+  },
+  {
+    name: "Khan Vattanak",
+    role: "Education Officer",
+    photo: "people/khan-vattanak.png",
+  },
+  {
+    name: "Nick Muir",
+    role: "Education Officer",
+    photo: "people/nick-muir.png",
+  },
+  {
+    name: "Noah Ryan",
+    role: "Education Officer",
+    photo: "people/noah-ryan.png",
+  },
 ];
 
 const DISCORD_URL = "https://discord.gg/dscubed";
@@ -156,7 +176,7 @@ export default function MeetTheTeam() {
             <p className="text-[14px] text-[#c2cfc9] leading-[1.6] max-w-[520px]">
               Stanley heads up DSCubed Education — shaping the workshop
               syllabus, mentoring competitors, and making sure the Kaggle comp
-              runs like a well-oiled order book.
+              runs smoothly.
             </p>
           </div>
         </div>

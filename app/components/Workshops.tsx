@@ -171,7 +171,10 @@ function WorkshopCard({ workshop }: { workshop: Workshop }) {
 
 export default function Workshops() {
   return (
-    <section id="workshops" className="relative max-w-400 mx-auto px-5 md:px-12 pb-16 md:pb-32 w-full">
+    <section
+      id="workshops"
+      className="relative max-w-400 mx-auto px-5 md:px-12 pb-16 md:pb-32 w-full"
+    >
       <div className="flex items-center gap-3 mb-6">
         <span
           className="text-[11px] tracking-[3px] uppercase text-[#23d191]"
@@ -189,8 +192,8 @@ export default function Workshops() {
         Workshops
       </h2>
       <p className="text-[15px] text-[#c2cfc9] leading-[1.7] max-w-[640px] mb-10">
-        Sharpen your edge before the bell rings. Each session is recorded —
-        catch up on the replay or grab the slides.
+        Unlock your potential with our guided workshops! Missed the session? We
+        release the slides after each workshop so you can catch up.
       </p>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

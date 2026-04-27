@@ -10,27 +10,31 @@ type QA = {
 const FAQS: QA[] = [
   {
     q: "Who can enter the competition?",
-    a: "Anyone — students, grads, and industry folk across all skill levels. You can compete solo or form a team of up to four. We have tracks and prizes designed to keep things fair whether it's your first Kaggle or your fiftieth.",
+    a: "Anyone, students across all skill levels. You can compete solo or in pairs. Looking for a partner? there will be time for team formation on the day where we will help match you up.",
   },
   {
     q: "Do I need prior machine learning experience?",
-    a: "Nope. Our workshops cover everything from exploratory data analysis to model building and evaluation. If you can write a bit of Python, you can ship a submission by the end of the event.",
+    a: "Nope. Our workshops are designed for beginners and will cover all the ML basics you need to get going. We also have Education Officers on hand during the comp to help out with any questions you have.",
   },
   {
     q: "How are teams scored?",
-    a: "Submissions are ranked on a held-out test set using a combination of prediction score and simulated trading profit. The public leaderboard updates live; the final board locks when submissions close at 6pm on competition day.",
+    a: "Submissions are ranked on a held-out test set using a combination of prediction score and simulated trading profit.",
   },
   {
     q: "What do I need to bring?",
-    a: "A laptop, charger, and your brain. We supply datasets, starter notebooks, snacks, catered lunch, and enough coffee to keep you well past the closing bell.",
+    a: "A laptop, charger, and your brain. We supply snacks, catered lunch, and enough coffee to keep you well past the closing bell.",
   },
   {
     q: "Is there a cost to enter?",
-    a: "Free for DSCubed members. Non-members can sign up at the door with a one-time membership fee that also gets you into every other event we run this year.",
+    a: "Nope. The competition and workshops are completely free to attend for everyone members or non-members.",
+  },
+  {
+    q: "Can I attend online?",
+    a: "Unfortunately, no. The Kaggle Competition is an in-person event due to logistical reasons. Plus, there will be food and networking opportunities!",
   },
   {
     q: "Where can I ask more questions?",
-    a: "Hop into our Discord — there's a dedicated #kaggle-26 channel where organisers, mentors, and past competitors hang out and help out.",
+    a: "Hop into our Discord — there's a dedicated channel where organisers, officers are ready to answer any questions or give you guidance.",
   },
 ];
 

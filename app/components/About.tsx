@@ -279,10 +279,9 @@ function Theme() {
           <p className="text-[15px] text-[#c2cfc9] leading-[1.7] max-w-[640px]">
             This year&apos;s challenge puts you in the driver&apos;s seat of the
             markets. Build models that forecast price movements, uncover signal
-            in the noise, and compete on real historical data. Whether you lean
-            on classic time-series methods, deep learning, or creative feature
-            engineering — the goal is simple: predict the market better than
-            anyone else in the room.
+            in the noise, and compete on real historical data. The goal is
+            simple: predict the market better than anyone else in the room and
+            maximise your portfolio returns.
           </p>
         </div>
       </div>

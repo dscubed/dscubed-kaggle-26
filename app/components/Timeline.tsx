@@ -15,26 +15,14 @@ type Entry = {
 
 const EVENT_TIMELINE: Entry[] = [
   {
-    start: "2026-04-18T18:00:00+10:00",
-    end: "2026-04-18T19:30:00+10:00",
-    location: "Online · Zoom",
-    title: "Applications Open",
-  },
-  {
-    start: "2026-04-24T17:30:00+10:00",
-    end: "2026-04-24T19:30:00+10:00",
-    location: "FBE Building · Room 211",
-    title: "Workshop 01 — Intro to Time-Series",
-  },
-  {
-    start: "2026-05-01T00:00:00+10:00",
-    end: "2026-05-23T18:00:00+10:00",
+    start: "2026-05-01T17:00:00+10:00",
+    end: "2026-05-01T19:00:00+10:00",
     location: "Union House · Training Room",
-    title: "Workshop 02 — Feature Engineering",
+    title: "Beginner Friendly Workshop",
   },
   {
-    start: "2026-05-08T18:00:00+10:00",
-    end: "2026-05-08T20:00:00+10:00",
+    start: "2026-05-09T10:00:00+10:00",
+    end: "2026-05-09T15:00:00+10:00",
     location: "Melbourne Connect · L2",
     title: "Competition Day",
   },
@@ -42,46 +30,22 @@ const EVENT_TIMELINE: Entry[] = [
 
 const COMPETITION_DAY: Entry[] = [
   {
-    start: "2026-05-23T09:00:00+10:00",
-    end: "2026-05-23T09:30:00+10:00",
-    location: "Melbourne Connect · Atrium",
-    title: "Check-in & Registration",
-  },
-  {
-    start: "2026-05-23T09:30:00+10:00",
-    end: "2026-05-23T10:00:00+10:00",
-    location: "Main Auditorium",
-    title: "Opening Keynote — Predicting Markets",
-  },
-  {
     start: "2026-05-23T10:00:00+10:00",
+    end: "2026-05-23T10:30:00+10:00",
+    location: "Arts West Building",
+    title: "Introductions · ML Processes + Dataset",
+  },
+  {
+    start: "2026-05-23T10:30:00+10:00",
     end: "2026-05-23T12:30:00+10:00",
-    location: "Kaggle Platform",
-    title: "Problem Set Release · Bell Rings",
+    location: "Arts West Building",
+    title: "Coding Time · Build your models",
   },
   {
     start: "2026-05-23T12:30:00+10:00",
-    end: "2026-05-23T13:30:00+10:00",
-    location: "Atrium",
-    title: "Catered Lunch",
-  },
-  {
-    start: "2026-05-23T15:00:00+10:00",
-    end: "2026-05-23T15:30:00+10:00",
-    location: "Leaderboard Display",
-    title: "Midday Checkpoint",
-  },
-  {
-    start: "2026-05-23T18:00:00+10:00",
-    end: "2026-05-23T18:30:00+10:00",
-    location: "Kaggle Platform",
-    title: "Final Submissions Close",
-  },
-  {
-    start: "2026-05-23T19:00:00+10:00",
-    end: "2026-05-23T20:30:00+10:00",
-    location: "Main Auditorium",
-    title: "Closing Ceremony & Prize Awards",
+    end: "2026-05-23T13:00:00+10:00",
+    location: "Arts West Building",
+    title: "Closing Ceremony · Prizes & Awards",
   },
 ];
 
