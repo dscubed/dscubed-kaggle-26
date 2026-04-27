@@ -43,7 +43,7 @@ export default function Home() {
       />
       <Navbar />
       <div
-        className="relative flex flex-col h-screen max-w-400 mx-auto overflow-hidden"
+        className="relative flex flex-col h-screen max-w-400 mx-auto"
         id="hero"
       >
         {/* Chart — overflow-hidden clips the 3D-transformed canvas to hero bounds */}
@@ -66,14 +66,14 @@ export default function Home() {
           className="absolute hidden md:block pointer-events-none bottom-[-8%] left-[-6%] w-[45%] aspect-square rounded-full z-10"
           style={{
             background:
-              "radial-gradient(ellipse at center, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.035) 35%, transparent 70%)",
+              "radial-gradient(ellipse at center, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.015) 35%, transparent 70%)",
           }}
         />
         <div
           className="absolute hidden md:block pointer-events-none top-[-12%] right-[-7%] w-[41%] aspect-square rounded-full z-10"
           style={{
             background:
-              "radial-gradient(ellipse at center, rgba(255,255,255,0.075) 0%, rgba(255,255,255,0.03) 35%, transparent 70%)",
+              "radial-gradient(ellipse at center, rgba(255,255,255,0.035) 0%, rgba(255,255,255,0.012) 35%, transparent 70%)",
           }}
         />
 
