@@ -14,11 +14,11 @@ export default function Footer() {
       >
         <span>
           © {year} DSCubed ·{" "}
-          <span className="text-[#23d191]/70">
+          <span className="text-[#20beff]/70">
             Data Science Student Society
           </span>
         </span>
-        <div className="flex gap-4 sm:gap-6 text-[#23d191]/70">
+        <div className="flex gap-4 sm:gap-6 text-[#20beff]/70">
           <Link
             href="mailto:outreach@dscubed.org.au"
             target="_blank"

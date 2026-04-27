@@ -504,12 +504,12 @@ export default function StockChart() {
       >
         <defs>
           <linearGradient id="gradB" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#4ade80" stopOpacity="0.42" />
-            <stop offset="100%" stopColor="#4ade80" stopOpacity="0.03" />
+            <stop offset="0%" stopColor="#38bdf8" stopOpacity="0.42" />
+            <stop offset="100%" stopColor="#38bdf8" stopOpacity="0.03" />
           </linearGradient>
           <linearGradient id="gradA" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#86efac" stopOpacity="0.22" />
-            <stop offset="100%" stopColor="#86efac" stopOpacity="0" />
+            <stop offset="0%" stopColor="#7dd3fc" stopOpacity="0.22" />
+            <stop offset="100%" stopColor="#7dd3fc" stopOpacity="0" />
           </linearGradient>
           {/* Left-edge fade — ease-out curve: fast rise at edge, smooth shoulder */}
           <linearGradient
@@ -551,9 +551,9 @@ export default function StockChart() {
           <YAxis labels={yLabels} />
           <XAxis labels={xLabels} />
 
-          {/* Live-end dot — series B (#4ade80) */}
+          {/* Live-end dot — series B (#38bdf8) */}
           <g ref={dotGroupBRef} transform="translate(0,0)">
-            <circle r="5" fill="none" stroke="#4ade80" strokeWidth="1.5">
+            <circle r="5" fill="none" stroke="#38bdf8" strokeWidth="1.5">
               <animate
                 attributeName="r"
                 values="5;20"
@@ -567,12 +567,12 @@ export default function StockChart() {
                 repeatCount="indefinite"
               />
             </circle>
-            <circle r="4" fill="#4ade80" opacity="0.95" />
+            <circle r="4" fill="#38bdf8" opacity="0.95" />
           </g>
 
-          {/* Live-end dot — series A (#86efac) */}
+          {/* Live-end dot — series A (#7dd3fc) */}
           <g ref={dotGroupARef} transform="translate(0,0)">
-            <circle r="4" fill="none" stroke="#86efac" strokeWidth="1.5">
+            <circle r="4" fill="none" stroke="#7dd3fc" strokeWidth="1.5">
               <animate
                 attributeName="r"
                 values="4;16"
@@ -588,7 +588,7 @@ export default function StockChart() {
                 repeatCount="indefinite"
               />
             </circle>
-            <circle r="3" fill="#86efac" opacity="0.9" />
+            <circle r="3" fill="#7dd3fc" opacity="0.9" />
           </g>
         </g>
       </svg>

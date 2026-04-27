@@ -15,7 +15,7 @@ export default function Home() {
       className="relative"
       style={{
         background:
-          "radial-gradient(ellipse 110% 35% at 50% 0%, #163929 0%, #0c2417 100%)",
+          "linear-gradient(to bottom, #0a1525 0%, #0a1525 75%, #03070f 100%)",
       }}
     >
       {/* Spotlight — swap src between /spotlight1.png and /spotlight2.png */}

@@ -37,9 +37,9 @@ function CTAButton() {
       rel="noopener noreferrer"
     >
       <button
-        className="mt-2 px-6 py-3 rounded-sm text-sm font-medium text-[#23d191] font-mono uppercase cursor-pointer border border-[#23d191] hover:border-[#23d191]/50 transition-all duration-300 backdrop-blur-2xl shadow-[inset_0_0_10px_rgba(35,209,145,0.2)] hover:shadow-[inset_0_0_28px_rgba(35,209,145,0.55)]"
+        className="mt-2 px-6 py-3 rounded-sm text-sm font-medium text-[#20beff] font-mono uppercase cursor-pointer border border-[#20beff] hover:border-[#20beff]/50 transition-all duration-300 backdrop-blur-2xl shadow-[inset_0_0_10px_rgba(32,190,255,0.2)] hover:shadow-[inset_0_0_28px_rgba(32,190,255,0.55)]"
         style={{
-          background: "rgba(35, 209, 145, 0.1)",
+          background: "rgba(32, 190, 255, 0.1)",
         }}
       >
         Sign up

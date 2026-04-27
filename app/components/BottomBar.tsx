@@ -43,11 +43,11 @@ export default function BottomBar() {
       <div className="flex items-center gap-2">
         <span className="relative flex h-2.5 w-2.5">
           {/* ping ring */}
-          <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#23d191] opacity-75" />
-          <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-[#23d191]" />
+          <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#20beff] opacity-75" />
+          <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-[#20beff]" />
         </span>
         <span
-          className="text-[13px] tracking-[2px] uppercase text-[#23d191]"
+          className="text-[13px] tracking-[2px] uppercase text-[#20beff]"
           style={{ fontFamily: "var(--font-anton)" }}
         >
           Live

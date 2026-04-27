@@ -2,11 +2,11 @@
 
 /* ─── Forge color palette ─────────────────────────────────────────────────── */
 @theme inline {
-  --color-forge-bg:       #020906;
-  --color-forge-accent:   #23d191;
-  --color-forge-accent-dk:#128258;
-  --color-forge-muted:    #c2cfc9;
-  --color-forge-card-bg:  rgba(25, 60, 45, 0.4);
+  --color-forge-bg:       #03070f;
+  --color-forge-accent:   #20beff;
+  --color-forge-accent-dk:#0a7abf;
+  --color-forge-muted:    #c2cfd9;
+  --color-forge-card-bg:  rgba(10, 20, 45, 0.4);
   --color-forge-border:   rgba(255, 255, 255, 0.08);
 
   --font-sans:    var(--font-inter);
@@ -16,7 +16,7 @@
 
 /* ─── Utilities ──────────────────────────────────────────────────────────── */
 .header-gradient {
-  background: linear-gradient(135deg, #4ade80 0%, #23d191 45%, #128258 100%);
+  background: linear-gradient(135deg, #60c8ff 0%, #20beff 45%, #0a7abf 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -26,7 +26,7 @@
 /* ─── Base ────────────────────────────────────────────────────────────────── */
 body {
   font-family: var(--font-sans), sans-serif;
-  background: #071e0f;
+  background: #0a1525;
   color: #ffffff;
   min-height: 100vh;
 }

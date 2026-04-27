@@ -84,8 +84,8 @@ function getStatus(entry: Entry, now: number | null): Status {
 function StatusPill({ status }: { status: Status }) {
   const map: Record<Status, string> = {
     CLOSED: "text-white/30 border-white/15 bg-white/[0.02]",
-    UPCOMING: "text-[#23d191] border-[#23d191]/30 bg-[#23d191]/[0.05]",
-    LIVE: "text-[#23d191] border-[#23d191]/60 bg-[#23d191]/10",
+    UPCOMING: "text-[#20beff] border-[#20beff]/30 bg-[#20beff]/[0.05]",
+    LIVE: "text-[#20beff] border-[#20beff]/60 bg-[#20beff]/10",
   };
   return (
     <span
@@ -94,8 +94,8 @@ function StatusPill({ status }: { status: Status }) {
     >
       {status === "LIVE" && (
         <span className="relative flex h-1.5 w-1.5">
-          <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#23d191] opacity-75" />
-          <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[#23d191]" />
+          <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#20beff] opacity-75" />
+          <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[#20beff]" />
         </span>
       )}
       {status}
@@ -130,10 +130,10 @@ function EntryRow({
           className="flex flex-wrap items-center gap-x-2 gap-y-0.5 text-[10px] tracking-[1.5px] uppercase"
           style={FONT_MONO}
         >
-          <span className="border-l-2 border-[#23d191]/40 pl-2 text-white tracking-[1px] text-[12px]">
+          <span className="border-l-2 border-[#20beff]/40 pl-2 text-white tracking-[1px] text-[12px]">
             {formatDate(entry.start)}
           </span>
-          <span className="text-[#23d191]">{formatTime(entry.start)}</span>
+          <span className="text-[#20beff]">{formatTime(entry.start)}</span>
           <span className="text-white/40">◆ {entry.location}</span>
         </div>
       </div>
@@ -143,13 +143,13 @@ function EntryRow({
         className={`hidden sm:grid sm:grid-cols-[110px_1fr_auto] sm:items-center gap-6 py-5 ${border} ${dim ? "opacity-40" : ""}`}
       >
         <div
-          className="flex flex-col leading-none border-l-2 border-[#23d191]/40 pl-3"
+          className="flex flex-col leading-none border-l-2 border-[#20beff]/40 pl-3"
           style={FONT_MONO}
         >
           <span className="text-[18px] text-white tracking-[1px]">
             {formatDate(entry.start)}
           </span>
-          <span className="text-[11px] text-[#23d191] mt-1 tracking-[2px]">
+          <span className="text-[11px] text-[#20beff] mt-1 tracking-[2px]">
             {formatTime(entry.start)}
           </span>
         </div>
@@ -189,12 +189,12 @@ export default function Timeline() {
     >
       <div className="flex items-center gap-3 mb-6">
         <span
-          className="text-[11px] tracking-[3px] uppercase text-[#23d191]"
+          className="text-[11px] tracking-[3px] uppercase text-[#20beff]"
           style={FONT_MONO}
         >
           {"// SCHEDULE"}
         </span>
-        <span className="h-px flex-1 bg-[#23d191]/20" />
+        <span className="h-px flex-1 bg-[#20beff]/20" />
       </div>
 
       <div className="flex items-end justify-between flex-wrap gap-6 mb-8">
@@ -206,14 +206,14 @@ export default function Timeline() {
         </h2>
 
         <div
-          className="inline-flex border border-[#23d191]/25 rounded-sm bg-black/40 p-1"
+          className="inline-flex border border-[#20beff]/25 rounded-sm bg-black/40 p-1"
           style={FONT_MONO}
         >
           <button
             onClick={() => setTab("event")}
             className={`px-4 py-2 text-[11px] tracking-[2px] uppercase rounded-sm transition-colors cursor-pointer ${
               tab === "event"
-                ? "bg-[#23d191]/15 text-[#23d191] shadow-[inset_0_0_12px_rgba(35,209,145,0.25)]"
+                ? "bg-[#20beff]/15 text-[#20beff] shadow-[inset_0_0_12px_rgba(32,190,255,0.25)]"
                 : "text-white/50 hover:text-white/80"
             }`}
           >
@@ -223,7 +223,7 @@ export default function Timeline() {
             onClick={() => setTab("comp")}
             className={`px-4 py-2 text-[11px] tracking-[2px] uppercase rounded-sm transition-colors cursor-pointer ${
               tab === "comp"
-                ? "bg-[#23d191]/15 text-[#23d191] shadow-[inset_0_0_12px_rgba(35,209,145,0.25)]"
+                ? "bg-[#20beff]/15 text-[#20beff] shadow-[inset_0_0_12px_rgba(32,190,255,0.25)]"
                 : "text-white/50 hover:text-white/80"
             }`}
           >
@@ -233,17 +233,17 @@ export default function Timeline() {
       </div>
 
       <div
-        className="relative rounded-md border border-[#23d191]/20 bg-[#02120a]/80 shadow-[0_0_40px_rgba(35,209,145,0.06)_inset,0_0_60px_rgba(0,0,0,0.5)] overflow-hidden"
+        className="relative rounded-md border border-[#20beff]/20 bg-[#020d1a]/80 shadow-[0_0_40px_rgba(32,190,255,0.06)_inset,0_0_60px_rgba(0,0,0,0.5)] overflow-hidden"
         style={{
           backgroundImage:
-            "repeating-linear-gradient(0deg, rgba(35,209,145,0.03) 0px, rgba(35,209,145,0.03) 1px, transparent 1px, transparent 3px)",
+            "repeating-linear-gradient(0deg, rgba(32,190,255,0.03) 0px, rgba(32,190,255,0.03) 1px, transparent 1px, transparent 3px)",
         }}
       >
         <div
-          className="flex items-center justify-between px-5 py-2 border-b border-[#23d191]/20 bg-black/40 text-[11px] tracking-[2px] uppercase"
+          className="flex items-center justify-between px-5 py-2 border-b border-[#20beff]/20 bg-black/40 text-[11px] tracking-[2px] uppercase"
           style={FONT_MONO}
         >
-          <span className="text-[#23d191]">
+          <span className="text-[#20beff]">
             {tab === "event" ? "EVENT_TIMELINE.FEED" : "COMP_DAY.FEED"}
           </span>
           <span className="flex gap-2 text-white/40">

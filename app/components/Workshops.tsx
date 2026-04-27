@@ -38,7 +38,7 @@ const FONT_MONO = { fontFamily: "var(--font-mono)" };
 function VideoPreview({ youtubeId }: { youtubeId: string | null }) {
   if (youtubeId) {
     return (
-      <div className="relative aspect-video overflow-hidden rounded-sm border border-[#23d191]/25 bg-black">
+      <div className="relative aspect-video overflow-hidden rounded-sm border border-[#20beff]/25 bg-black">
         <iframe
           className="absolute inset-0 h-full w-full"
           src={`https://www.youtube.com/embed/${youtubeId}`}
@@ -52,20 +52,20 @@ function VideoPreview({ youtubeId }: { youtubeId: string | null }) {
 
   return (
     <div
-      className="relative aspect-video overflow-hidden rounded-sm border border-[#23d191]/20 bg-[#02120a]/80"
+      className="relative aspect-video overflow-hidden rounded-sm border border-[#20beff]/20 bg-[#020d1a]/80"
       style={{
         backgroundImage:
-          "repeating-linear-gradient(0deg, rgba(35,209,145,0.05) 0px, rgba(35,209,145,0.05) 1px, transparent 1px, transparent 3px)",
+          "repeating-linear-gradient(0deg, rgba(32,190,255,0.05) 0px, rgba(32,190,255,0.05) 1px, transparent 1px, transparent 3px)",
       }}
     >
       {/* Signal-lost crosshair */}
       <div className="absolute inset-0 flex flex-col items-center justify-center gap-3">
         <div className="flex items-center gap-3" style={FONT_MONO}>
           <span className="relative flex h-2 w-2">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#23d191] opacity-60" />
-            <span className="relative inline-flex h-2 w-2 rounded-full bg-[#23d191]/80" />
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#20beff] opacity-60" />
+            <span className="relative inline-flex h-2 w-2 rounded-full bg-[#20beff]/80" />
           </span>
-          <span className="text-[11px] tracking-[3px] uppercase text-[#23d191]">
+          <span className="text-[11px] tracking-[3px] uppercase text-[#20beff]">
             AWAITING SIGNAL
           </span>
         </div>
@@ -78,10 +78,10 @@ function VideoPreview({ youtubeId }: { youtubeId: string | null }) {
       </div>
 
       {/* Corner bezel marks */}
-      <span className="absolute top-2 left-2 h-3 w-3 border-t border-l border-[#23d191]/60" />
-      <span className="absolute top-2 right-2 h-3 w-3 border-t border-r border-[#23d191]/60" />
-      <span className="absolute bottom-2 left-2 h-3 w-3 border-b border-l border-[#23d191]/60" />
-      <span className="absolute bottom-2 right-2 h-3 w-3 border-b border-r border-[#23d191]/60" />
+      <span className="absolute top-2 left-2 h-3 w-3 border-t border-l border-[#20beff]/60" />
+      <span className="absolute top-2 right-2 h-3 w-3 border-t border-r border-[#20beff]/60" />
+      <span className="absolute bottom-2 left-2 h-3 w-3 border-b border-l border-[#20beff]/60" />
+      <span className="absolute bottom-2 right-2 h-3 w-3 border-b border-r border-[#20beff]/60" />
     </div>
   );
 }
@@ -107,7 +107,7 @@ function DownloadSlides({ url }: { url: string | null }) {
     <a
       href={url}
       download
-      className={`${className} border-[#23d191]/40 bg-[#23d191]/10 text-[#23d191] hover:bg-[#23d191]/20 hover:border-[#23d191]/70 shadow-[inset_0_0_12px_rgba(35,209,145,0.2)] hover:shadow-[inset_0_0_20px_rgba(35,209,145,0.4)]`}
+      className={`${className} border-[#20beff]/40 bg-[#20beff]/10 text-[#20beff] hover:bg-[#20beff]/20 hover:border-[#20beff]/70 shadow-[inset_0_0_12px_rgba(32,190,255,0.2)] hover:shadow-[inset_0_0_20px_rgba(32,190,255,0.4)]`}
       style={FONT_MONO}
     >
       Download Slides
@@ -119,16 +119,16 @@ function DownloadSlides({ url }: { url: string | null }) {
 function WorkshopCard({ workshop }: { workshop: Workshop }) {
   return (
     <div
-      className="relative flex flex-col gap-5 rounded-md border border-[#23d191]/25 bg-[#02120a]/85 p-6 shadow-[0_0_40px_rgba(35,209,145,0.06)_inset,0_0_60px_rgba(0,0,0,0.5)] overflow-hidden"
+      className="relative flex flex-col gap-5 rounded-md border border-[#20beff]/25 bg-[#020d1a]/85 p-6 shadow-[0_0_40px_rgba(32,190,255,0.06)_inset,0_0_60px_rgba(0,0,0,0.5)] overflow-hidden"
       style={{
         backgroundImage:
-          "repeating-linear-gradient(0deg, rgba(35,209,145,0.03) 0px, rgba(35,209,145,0.03) 1px, transparent 1px, transparent 3px)",
+          "repeating-linear-gradient(0deg, rgba(32,190,255,0.03) 0px, rgba(32,190,255,0.03) 1px, transparent 1px, transparent 3px)",
       }}
     >
       {/* Header */}
       <div className="flex items-center justify-between">
         <span
-          className="text-[10px] tracking-[3px] uppercase text-[#23d191]"
+          className="text-[10px] tracking-[3px] uppercase text-[#20beff]"
           style={FONT_MONO}
         >
           WORKSHOP_{String(workshop.index).padStart(2, "0")}
@@ -159,7 +159,7 @@ function WorkshopCard({ workshop }: { workshop: Workshop }) {
         style={FONT_MONO}
       >
         <span className="text-white">{workshop.date}</span>
-        <span className="text-[#23d191]">{workshop.time}</span>
+        <span className="text-[#20beff]">{workshop.time}</span>
       </div>
 
       <VideoPreview youtubeId={workshop.youtubeId} />
@@ -177,12 +177,12 @@ export default function Workshops() {
     >
       <div className="flex items-center gap-3 mb-6">
         <span
-          className="text-[11px] tracking-[3px] uppercase text-[#23d191]"
+          className="text-[11px] tracking-[3px] uppercase text-[#20beff]"
           style={FONT_MONO}
         >
           {"// TRAINING_MODULES"}
         </span>
-        <span className="h-px flex-1 bg-[#23d191]/20" />
+        <span className="h-px flex-1 bg-[#20beff]/20" />
       </div>
 
       <h2

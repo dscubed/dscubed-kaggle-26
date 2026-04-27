@@ -26,15 +26,15 @@ function Starburst() {
       fill="none"
       aria-hidden="true"
     >
-      <circle cx="50" cy="50" r="12" fill="#23d191" />
-      <path d="M48 10 L52 10 L50 35 Z" fill="#23d191" />
-      <path d="M48 90 L52 90 L50 65 Z" fill="#23d191" />
-      <path d="M10 48 L10 52 L35 50 Z" fill="#23d191" />
-      <path d="M90 48 L90 52 L65 50 Z" fill="#23d191" />
-      <path d="M25 25 L28 22 L40 40 Z" fill="#23d191" />
-      <path d="M75 75 L72 78 L60 60 Z" fill="#23d191" />
-      <path d="M75 25 L78 28 L60 40 Z" fill="#23d191" />
-      <path d="M25 75 L22 72 L40 60 Z" fill="#23d191" />
+      <circle cx="50" cy="50" r="12" fill="#20beff" />
+      <path d="M48 10 L52 10 L50 35 Z" fill="#20beff" />
+      <path d="M48 90 L52 90 L50 65 Z" fill="#20beff" />
+      <path d="M10 48 L10 52 L35 50 Z" fill="#20beff" />
+      <path d="M90 48 L90 52 L65 50 Z" fill="#20beff" />
+      <path d="M25 25 L28 22 L40 40 Z" fill="#20beff" />
+      <path d="M75 75 L72 78 L60 60 Z" fill="#20beff" />
+      <path d="M75 25 L78 28 L60 40 Z" fill="#20beff" />
+      <path d="M25 75 L22 72 L40 60 Z" fill="#20beff" />
     </svg>
   );
 }
@@ -51,10 +51,10 @@ function CenterCTARow() {
         platforms, and tools
       </p>
       <button
-        className="px-7 py-[14px] rounded-[4px] text-[14px] font-medium text-white cursor-pointer border border-[#23d191]"
+        className="px-7 py-[14px] rounded-[4px] text-[14px] font-medium text-white cursor-pointer border border-[#20beff]"
         style={{
-          background: "rgba(35, 209, 145, 0.1)",
-          boxShadow: "inset 0 0 10px rgba(35, 209, 145, 0.2)",
+          background: "rgba(32, 190, 255, 0.1)",
+          boxShadow: "inset 0 0 10px rgba(32, 190, 255, 0.2)",
         }}
       >
         Get Started
@@ -103,7 +103,7 @@ function BottomRightStats() {
       <StatBlock
         heading={
           <>
-            20<span className="text-[#23d191]">x</span> POWER
+            20<span className="text-[#20beff]">x</span> POWER
             <br />
             EFFICIENCY
           </>

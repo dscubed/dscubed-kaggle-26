@@ -15,9 +15,9 @@ function useUtcClock() {
 function WifiIcon() {
   return (
     <svg width="16" height="14" viewBox="0 0 16 14" fill="none" className="opacity-80">
-      <path d="M8 10.5a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" fill="#23d191" />
-      <path d="M5.17 8.17a4 4 0 0 1 5.66 0" stroke="#23d191" strokeWidth="1.2" strokeLinecap="round" opacity="0.75" />
-      <path d="M2.93 5.93a7 7 0 0 1 10.14 0" stroke="#23d191" strokeWidth="1.2" strokeLinecap="round" opacity="0.45" />
+      <path d="M8 10.5a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" fill="#20beff" />
+      <path d="M5.17 8.17a4 4 0 0 1 5.66 0" stroke="#20beff" strokeWidth="1.2" strokeLinecap="round" opacity="0.75" />
+      <path d="M2.93 5.93a7 7 0 0 1 10.14 0" stroke="#20beff" strokeWidth="1.2" strokeLinecap="round" opacity="0.45" />
     </svg>
   );
 }
@@ -25,9 +25,9 @@ function WifiIcon() {
 function BatteryIcon() {
   return (
     <svg width="22" height="12" viewBox="0 0 22 12" fill="none" className="opacity-80">
-      <rect x="0.5" y="0.5" width="18" height="11" rx="2" stroke="#23d191" strokeWidth="1" />
-      <rect x="19" y="3.5" width="2.5" height="5" rx="1" fill="#23d191" opacity="0.6" />
-      <rect x="2" y="2" width="14" height="8" rx="1" fill="#23d191" />
+      <rect x="0.5" y="0.5" width="18" height="11" rx="2" stroke="#20beff" strokeWidth="1" />
+      <rect x="19" y="3.5" width="2.5" height="5" rx="1" fill="#20beff" opacity="0.6" />
+      <rect x="2" y="2" width="14" height="8" rx="1" fill="#20beff" />
     </svg>
   );
 }
@@ -75,8 +75,8 @@ function TeamCell({ members }: { members: string[] | null }) {
 
 function LeaderboardRow({ row }: { row: Row }) {
   const isWinner = row.prize !== null;
-  const tone = isWinner ? "text-[#23d191]" : "text-[#c2cfc9]";
-  const flash = row.rank === 1 ? "bg-[#23d191]/[0.04]" : "";
+  const tone = isWinner ? "text-[#20beff]" : "text-[#c2cfc9]";
+  const flash = row.rank === 1 ? "bg-[#20beff]/[0.04]" : "";
   return (
     <>
       {/* Desktop row */}
@@ -93,7 +93,7 @@ function LeaderboardRow({ row }: { row: Row }) {
         <span className={`text-[13px] text-right tabular-nums ${tone}`}>
           {row.score !== null ? fmt(row.score, 4) : "—"}
         </span>
-        <span className="text-[13px] text-right tabular-nums text-[#23d191]">
+        <span className="text-[13px] text-right tabular-nums text-[#20beff]">
           {row.profit !== null ? `+$${fmt(row.profit)}` : "—"}
         </span>
         <span
@@ -119,7 +119,7 @@ function LeaderboardRow({ row }: { row: Row }) {
         <span className={`text-[11px] tabular-nums ${tone}`}>
           {row.score !== null ? fmt(row.score, 4) : "—"}
         </span>
-        <span className="text-[11px] tabular-nums text-[#23d191]">
+        <span className="text-[11px] tabular-nums text-[#20beff]">
           {row.profit !== null ? `+$${fmt(row.profit)}` : "—"}
         </span>
         <span
@@ -146,7 +146,7 @@ function LoadingRows() {
 
   return (
     <div
-      className="flex items-center justify-center py-3 text-[10px] border-[#23d191]/20 bg-black/15 text-[#23d191] tracking-[2px] uppercase"
+      className="flex items-center justify-center py-3 text-[10px] border-[#20beff]/20 bg-black/15 text-[#20beff] tracking-[2px] uppercase"
       style={FONT_MONO}
     >
       Loading <span className="w-[18px] text-left inline-block">{dots}</span>
@@ -175,7 +175,7 @@ function TickerStrip() {
         return (
           <span key={sym} className="flex items-center gap-2">
             <span className="text-white/60">{sym}</span>
-            <span className={up ? "text-[#23d191]" : "text-[#ff5c7a]"}>
+            <span className={up ? "text-[#20beff]" : "text-[#ff5c7a]"}>
               {chg}
             </span>
           </span>
@@ -194,12 +194,12 @@ export default function Leaderboard() {
     >
       <div className="flex items-center gap-3 mb-6">
         <span
-          className="text-[11px] tracking-[3px] uppercase text-[#23d191]"
+          className="text-[11px] tracking-[3px] uppercase text-[#20beff]"
           style={FONT_MONO}
         >
           {"// PRIZES_AND_LEADERBOARD"}
         </span>
-        <span className="h-px flex-1 bg-[#23d191]/20" />
+        <span className="h-px flex-1 bg-[#20beff]/20" />
       </div>
 
       <h2
@@ -211,23 +211,23 @@ export default function Leaderboard() {
 
       {/* Display tablet */}
       <div
-        className="relative rounded-md border border-[#23d191]/25 bg-[#02120a]/90 shadow-[0_0_40px_rgba(35,209,145,0.08)_inset,0_0_60px_rgba(0,0,0,0.6)] overflow-hidden"
+        className="relative rounded-md border border-[#20beff]/25 bg-[#020d1a]/90 shadow-[0_0_40px_rgba(32,190,255,0.08)_inset,0_0_60px_rgba(0,0,0,0.6)] overflow-hidden"
         style={{
           backgroundImage:
-            "repeating-linear-gradient(0deg, rgba(35,209,145,0.04) 0px, rgba(35,209,145,0.04) 1px, transparent 1px, transparent 3px)",
+            "repeating-linear-gradient(0deg, rgba(32,190,255,0.04) 0px, rgba(32,190,255,0.04) 1px, transparent 1px, transparent 3px)",
         }}
       >
         {/* Bezel header */}
         <div
-          className="flex items-center justify-between px-5 py-2 border-b border-[#23d191]/20 bg-black/40"
+          className="flex items-center justify-between px-5 py-2 border-b border-[#20beff]/20 bg-black/40"
           style={FONT_MONO}
         >
           <div className="flex items-center gap-3 text-[11px] tracking-[2px] uppercase">
             <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#23d191] opacity-75" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-[#23d191]" />
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#20beff] opacity-75" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-[#20beff]" />
             </span>
-            <span className="text-[#23d191]">LIVE</span>
+            <span className="text-[#20beff]">LIVE</span>
             <span className="text-white/30 hidden sm:inline">·</span>
             <span className="text-white/50 hidden sm:inline">
               DSCUBED::KAGGLE/26
@@ -275,14 +275,14 @@ export default function Leaderboard() {
 
         {/* Bezel footer */}
         <div
-          className="flex items-center justify-between px-5 py-2 border-t border-[#23d191]/20 bg-black/40 text-[10px] tracking-[2px] uppercase"
+          className="flex items-center justify-between px-5 py-2 border-t border-[#20beff]/20 bg-black/40 text-[10px] tracking-[2px] uppercase"
           style={FONT_MONO}
         >
           <span className="text-white/30">PAGE 01 / 01</span>
           <div className="flex items-center gap-2 text-white/40">
             <span>SESSION 04</span>
             <span className="text-white/20">·</span>
-            <span className="tabular-nums text-[#23d191]/70">UTC {utc}</span>
+            <span className="tabular-nums text-[#20beff]/70">UTC {utc}</span>
           </div>
           <span className="text-white/30">FEED OK</span>
         </div>

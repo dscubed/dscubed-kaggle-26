@@ -71,7 +71,7 @@ function HamburgerButton({
   return (
     <button
       onClick={onClick}
-      className="flex flex-col justify-center items-center gap-[5px] h-9 w-9 cursor-pointer rounded-sm border border-white/10 hover:border-[#23d191]/40 transition-colors duration-200"
+      className="flex flex-col justify-center items-center gap-[5px] h-9 w-9 cursor-pointer rounded-sm border border-white/10 hover:border-[#20beff]/40 transition-colors duration-200"
       aria-label="Toggle menu"
     >
       <span
@@ -94,7 +94,7 @@ function NavButton() {
       target="_blank"
       rel="noopener noreferrer"
     >
-      <button className="flex items-center px-5 py-[9px] rounded-sm cursor-pointer text-[12px] tracking-wide font-mono font-bold border text-[#23d191] border-[#23d191]/25 bg-[#02120a]/90 transition-opacity duration-200 hover:opacity-90">
+      <button className="flex items-center px-5 py-[9px] rounded-sm cursor-pointer text-[12px] tracking-wide font-mono font-bold border text-[#20beff] border-[#20beff]/25 bg-[#020d1a]/90 transition-opacity duration-200 hover:opacity-90">
         JOIN NOW
       </button>
     </Link>
@@ -115,7 +115,7 @@ function Sidebar({
       {/* Backdrop */}
       <div
         className={`fixed inset-0 z-[60] transition-opacity duration-300 ${open ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}
-        style={{ background: "rgba(2,9,6,0.55)", backdropFilter: "blur(4px)" }}
+        style={{ background: "rgba(2,6,15,0.55)", backdropFilter: "blur(4px)" }}
         onClick={onClose}
       />
 
@@ -125,10 +125,10 @@ function Sidebar({
         style={{
           width: "min(340px, 90vw)",
           background:
-            "linear-gradient(160deg, rgba(10,28,20,0.98) 0%, rgba(2,9,6,0.99) 60%)",
-          borderLeft: "1px solid rgba(35,209,145,0.15)",
+            "linear-gradient(160deg, rgba(10,20,40,0.98) 0%, rgba(2,6,15,0.99) 60%)",
+          borderLeft: "1px solid rgba(32,190,255,0.15)",
           boxShadow:
-            "-8px 0 40px rgba(0,0,0,0.6), inset -1px 0 0 rgba(35,209,145,0.05)",
+            "-8px 0 40px rgba(0,0,0,0.6), inset -1px 0 0 rgba(32,190,255,0.05)",
         }}
       >
         {/* Scanline overlay */}
@@ -141,10 +141,10 @@ function Sidebar({
         />
 
         {/* Top bar */}
-        <div className="relative flex items-center justify-between px-6 py-5 border-b border-[#23d191]/10">
+        <div className="relative flex items-center justify-between px-6 py-5 border-b border-[#20beff]/10">
           <div className="flex flex-col gap-0.5">
             <span
-              className="text-[10px] tracking-[3px] uppercase text-[#23d191]/60"
+              className="text-[10px] tracking-[3px] uppercase text-[#20beff]/60"
               style={FONT_MONO}
             >
               {"// KAGGLE_COMPETITION"}
@@ -158,7 +158,7 @@ function Sidebar({
           </div>
           <button
             onClick={onClose}
-            className="h-8 w-8 flex items-center justify-center rounded-sm border border-white/10 hover:border-[#23d191]/40 text-white/50 hover:text-white transition-colors duration-150 cursor-pointer text-lg leading-none"
+            className="h-8 w-8 flex items-center justify-center rounded-sm border border-white/10 hover:border-[#20beff]/40 text-white/50 hover:text-white transition-colors duration-150 cursor-pointer text-lg leading-none"
           >
             ×
           </button>
@@ -174,13 +174,13 @@ function Sidebar({
                 key={label}
                 href={href}
                 onClick={onClose}
-                className="group relative flex items-center gap-4 px-4 py-3.5 rounded-sm transition-all duration-200 hover:bg-[#23d191]/5"
-                style={isActive ? { background: "rgba(35,209,145,0.08)" } : {}}
+                className="group relative flex items-center gap-4 px-4 py-3.5 rounded-sm transition-all duration-200 hover:bg-[#20beff]/5"
+                style={isActive ? { background: "rgba(32,190,255,0.08)" } : {}}
               >
                 {/* Active left bar */}
                 <span
                   className="absolute left-0 top-2 bottom-2 w-[2px] rounded-full transition-all duration-200"
-                  style={{ background: isActive ? "#23d191" : "transparent" }}
+                  style={{ background: isActive ? "#20beff" : "transparent" }}
                 />
 
                 {/* Index */}
@@ -188,7 +188,7 @@ function Sidebar({
                   className="text-[10px] w-6 shrink-0 text-right tabular-nums"
                   style={{
                     ...FONT_MONO,
-                    color: isActive ? "#23d191" : "rgba(255,255,255,0.2)",
+                    color: isActive ? "#20beff" : "rgba(255,255,255,0.2)",
                   }}
                 >
                   {String(i + 1).padStart(2, "0")}
@@ -199,7 +199,7 @@ function Sidebar({
                   className="w-px h-6 shrink-0"
                   style={{
                     background: isActive
-                      ? "rgba(35,209,145,0.4)"
+                      ? "rgba(32,190,255,0.4)"
                       : "rgba(255,255,255,0.08)",
                   }}
                 />
@@ -209,7 +209,7 @@ function Sidebar({
                   <span
                     className="text-[13px] font-medium tracking-[0.5px] uppercase transition-colors duration-200"
                     style={{
-                      color: isActive ? "#23d191" : "rgba(255,255,255,0.85)",
+                      color: isActive ? "#20beff" : "rgba(255,255,255,0.85)",
                     }}
                   >
                     {label}
@@ -225,7 +225,7 @@ function Sidebar({
                 {/* Arrow */}
                 <span
                   className="ml-auto text-xs transition-all duration-200 opacity-0 group-hover:opacity-100 -translate-x-1 group-hover:translate-x-0"
-                  style={{ color: "#23d191" }}
+                  style={{ color: "#20beff" }}
                 >
                   →
                 </span>
@@ -235,9 +235,9 @@ function Sidebar({
         </nav>
 
         {/* Bottom status bar */}
-        <div className="relative px-6 py-4 border-t border-[#23d191]/10 flex items-center justify-between">
+        <div className="relative px-6 py-4 border-t border-[#20beff]/10 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <span className="h-1.5 w-1.5 rounded-full bg-[#23d191] animate-pulse" />
+            <span className="h-1.5 w-1.5 rounded-full bg-[#20beff] animate-pulse" />
             <span
               className="text-[9px] tracking-[2px] uppercase text-white/25"
               style={FONT_MONO}
@@ -254,8 +254,8 @@ function Sidebar({
         </div>
 
         {/* Corner brackets */}
-        <span className="absolute top-3 left-3 h-3 w-3 border-t border-l border-[#23d191]/30" />
-        <span className="absolute bottom-3 right-3 h-3 w-3 border-b border-r border-[#23d191]/30" />
+        <span className="absolute top-3 left-3 h-3 w-3 border-t border-l border-[#20beff]/30" />
+        <span className="absolute bottom-3 right-3 h-3 w-3 border-b border-r border-[#20beff]/30" />
       </aside>
     </>
   );

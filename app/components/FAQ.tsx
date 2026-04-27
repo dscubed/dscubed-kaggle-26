@@ -54,7 +54,7 @@ function FaqItem({
   return (
     <div
       className={`border-b border-white/5 transition-colors ${
-        open ? "bg-[#23d191]/[0.03]" : ""
+        open ? "bg-[#20beff]/[0.03]" : ""
       }`}
     >
       <button
@@ -62,16 +62,16 @@ function FaqItem({
         className="w-full flex items-center gap-3 sm:gap-4 px-4 sm:px-6 py-4 sm:py-5 text-left cursor-pointer group"
       >
         <span
-          className="text-[11px] tracking-[2px] text-[#23d191]/70 w-10 shrink-0"
+          className="text-[11px] tracking-[2px] text-[#20beff]/70 w-10 shrink-0"
           style={FONT_MONO}
         >
           Q.{String(index + 1).padStart(2, "0")}
         </span>
-        <span className="flex-1 text-[16px] text-white group-hover:text-[#23d191] transition-colors">
+        <span className="flex-1 text-[16px] text-white group-hover:text-[#20beff] transition-colors">
           {qa.q}
         </span>
         <span
-          className={`flex h-6 w-6 shrink-0 items-center justify-center border border-[#23d191]/40 rounded-sm text-[#23d191] text-[14px] transition-transform ${
+          className={`flex h-6 w-6 shrink-0 items-center justify-center border border-[#20beff]/40 rounded-sm text-[#20beff] text-[14px] transition-transform ${
             open ? "rotate-45" : ""
           }`}
           style={FONT_MONO}
@@ -89,7 +89,7 @@ function FaqItem({
         <div className="overflow-hidden">
           <div className="flex gap-3 sm:gap-4 px-4 sm:px-6 pb-5">
             <span
-              className="text-[11px] tracking-[2px] text-[#23d191]/70 w-10 shrink-0"
+              className="text-[11px] tracking-[2px] text-[#20beff]/70 w-10 shrink-0"
               style={FONT_MONO}
             >
               A.{String(index + 1).padStart(2, "0")}
@@ -111,12 +111,12 @@ export default function FAQ() {
     <section className="relative max-w-400 mx-auto px-5 md:px-12 pb-16 md:pb-32 w-full">
       <div className="flex items-center gap-3 mb-6">
         <span
-          className="text-[11px] tracking-[3px] uppercase text-[#23d191]"
+          className="text-[11px] tracking-[3px] uppercase text-[#20beff]"
           style={FONT_MONO}
         >
           {"// FAQ.STREAM"}
         </span>
-        <span className="h-px flex-1 bg-[#23d191]/20" />
+        <span className="h-px flex-1 bg-[#20beff]/20" />
       </div>
 
       <div className="flex items-end justify-between flex-wrap gap-6 mb-8">
@@ -137,17 +137,17 @@ export default function FAQ() {
       </div>
 
       <div
-        className="relative rounded-md border border-[#23d191]/20 bg-[#02120a]/80 shadow-[0_0_40px_rgba(35,209,145,0.06)_inset,0_0_60px_rgba(0,0,0,0.5)] overflow-hidden"
+        className="relative rounded-md border border-[#20beff]/20 bg-[#020d1a]/80 shadow-[0_0_40px_rgba(32,190,255,0.06)_inset,0_0_60px_rgba(0,0,0,0.5)] overflow-hidden"
         style={{
           backgroundImage:
-            "repeating-linear-gradient(0deg, rgba(35,209,145,0.03) 0px, rgba(35,209,145,0.03) 1px, transparent 1px, transparent 3px)",
+            "repeating-linear-gradient(0deg, rgba(32,190,255,0.03) 0px, rgba(32,190,255,0.03) 1px, transparent 1px, transparent 3px)",
         }}
       >
         <div
-          className="flex items-center justify-between px-5 py-2 border-b border-[#23d191]/20 bg-black/40 text-[11px] tracking-[2px] uppercase"
+          className="flex items-center justify-between px-5 py-2 border-b border-[#20beff]/20 bg-black/40 text-[11px] tracking-[2px] uppercase"
           style={FONT_MONO}
         >
-          <span className="text-[#23d191]">FAQ::QUERY_FEED</span>
+          <span className="text-[#20beff]">FAQ::QUERY_FEED</span>
           <span className="text-white/40">EXPAND TO INSPECT</span>
         </div>
 
