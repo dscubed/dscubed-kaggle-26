@@ -12,7 +12,7 @@ import Footer from "./components/Footer";
 export default function Home() {
   return (
     <div
-      className="relative"
+      className="relative overflow-x-hidden"
       style={{
         background:
           "linear-gradient(to bottom, #0a1525 0%, #0a1525 75%, #03070f 100%)",
