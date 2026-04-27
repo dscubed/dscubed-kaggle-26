@@ -1,3 +1,4 @@
+import Link from "next/link";
 import BottomBar from "./BottomBar";
 
 function Heading() {
@@ -30,14 +31,20 @@ function Description() {
 
 function CTAButton() {
   return (
-    <button
-      className="mt-2 px-6 py-3 rounded-sm text-sm font-medium text-white cursor-pointer border border-[#23d191] hover:border-[#23d191]/50 transition-all duration-300 backdrop-blur-2xl shadow-[inset_0_0_10px_rgba(35,209,145,0.2)] hover:shadow-[inset_0_0_28px_rgba(35,209,145,0.55)]"
-      style={{
-        background: "rgba(35, 209, 145, 0.1)",
-      }}
+    <Link
+      href="https://events.humanitix.com/dscubed-2026-kaggle-competition"
+      target="_blank"
+      rel="noopener noreferrer"
     >
-      Sign up
-    </button>
+      <button
+        className="mt-2 px-6 py-3 rounded-sm text-sm font-medium text-white cursor-pointer border border-[#23d191] hover:border-[#23d191]/50 transition-all duration-300 backdrop-blur-2xl shadow-[inset_0_0_10px_rgba(35,209,145,0.2)] hover:shadow-[inset_0_0_28px_rgba(35,209,145,0.55)]"
+        style={{
+          background: "rgba(35, 209, 145, 0.1)",
+        }}
+      >
+        Sign up
+      </button>
+    </Link>
   );
 }
 

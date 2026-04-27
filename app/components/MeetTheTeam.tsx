@@ -10,7 +10,7 @@ type Member = {
 const DIRECTOR: Member = {
   name: "Stanley Zaranski",
   role: "Education Director",
-  photo: "people/stanley-zaranski.png",
+  photo: "people/stanley-zaranski.webp",
 };
 
 const OFFICERS: Member[] = [
@@ -18,27 +18,27 @@ const OFFICERS: Member[] = [
   {
     name: "Anhad Singh",
     role: "Education Officer",
-    photo: "people/anhad-singh.png",
+    photo: "people/anhad-singh.webp",
   },
   {
     name: "Daniel Nam",
     role: "Education Officer",
-    photo: "people/daniel-nam.png",
+    photo: "people/daniel-nam.webp",
   },
   {
     name: "Khan Vattanak",
     role: "Education Officer",
-    photo: "people/khan-vattanak.png",
+    photo: "people/khan-vattanak.webp",
   },
   {
     name: "Nick Muir",
     role: "Education Officer",
-    photo: "people/nick-muir.png",
+    photo: "people/nick-muir.webp",
   },
   {
     name: "Noah Ryan",
     role: "Education Officer",
-    photo: "people/noah-ryan.png",
+    photo: "people/noah-ryan.webp",
   },
 ];
 

@@ -280,6 +280,9 @@ export default function StockChart() {
   const pathAreaARef = useRef<SVGPathElement>(null);
   const pathLineARef = useRef<SVGPathElement>(null);
 
+  // Track which series is currently on top in the DOM so we only reorder on change
+  const aAboveBRef = useRef(false);
+
   // Refs for the live-end dot groups (imperative position updates via rAF)
   const dotGroupARef = useRef<SVGGElement>(null);
   const dotGroupBRef = useRef<SVGGElement>(null);
@@ -390,6 +393,24 @@ export default function StockChart() {
               pathLineBRef.current,
               pathAreaBRef.current,
             );
+
+          // Fix area paint order: the lower series' area must render on top
+          // (it's the smaller area, so it won't occlude the upper series' fill).
+          // Without this, the upper series' larger area covers the lower series'.
+          const newAAboveB = a[n - 1] > b[n - 1];
+          if (newAAboveB !== aAboveBRef.current) {
+            aAboveBRef.current = newAAboveB;
+            const parent = pathAreaARef.current?.parentNode;
+            if (parent && pathAreaARef.current && pathAreaBRef.current) {
+              if (newAAboveB) {
+                // A higher → A's area larger → paint B's area on top
+                parent.insertBefore(pathAreaARef.current, pathAreaBRef.current);
+              } else {
+                // B higher → B's area larger → paint A's area on top
+                parent.insertBefore(pathAreaBRef.current, pathAreaARef.current);
+              }
+            }
+          }
 
           // Move live-end dot groups to the trailing tip of each series
           if (dotGroupARef.current) {

@@ -1,19 +1,18 @@
-import Image from "next/image";
 import HoverVideo from "./HoverVideo";
 
 const FONT_MONO = { fontFamily: "var(--font-mono)" };
 
 const GALLERY_IMAGE: (string | null)[] = [
-  "img01.jpg",
-  "img02.jpg",
-  "img03.jpg",
-  "img04.jpg",
-  "img05.jpg",
-  "img06.jpg",
-  "img07.jpg",
-  "img08.jpg",
-  "img09.jpg",
-  "img10.jpg",
+  "img01.webp",
+  "img02.webp",
+  "img03.webp",
+  "img04.webp",
+  "img05.webp",
+  "img06.webp",
+  "img07.webp",
+  "img08.webp",
+  "img09.webp",
+  "img10.webp",
 ];
 
 function KaggleDatasetDiagram() {
@@ -180,12 +179,10 @@ function GalleryTile({ src, index }: { src: string | null; index: number }) {
   if (src) {
     return (
       <div className={`${base} border-[#23d191]/25`}>
-        <Image
+        <img
           src={`/gallery/${src}`}
           alt={`Past event ${index + 1}`}
           className="h-full w-full object-cover"
-          width={500}
-          height={375}
         />
       </div>
     );

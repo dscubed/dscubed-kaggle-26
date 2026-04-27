@@ -37,6 +37,22 @@ export default function Home() {
           </div>
         </div>
 
+        {/* Radial glows — desktop only */}
+        <div
+          className="absolute hidden md:block pointer-events-none bottom-[-8%] left-[-6%] w-[45%] aspect-square rounded-full z-10"
+          style={{
+            background:
+              "radial-gradient(ellipse at center, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.035) 35%, transparent 70%)",
+          }}
+        />
+        <div
+          className="absolute hidden md:block pointer-events-none top-[-12%] right-[-7%] w-[41%] aspect-square rounded-full z-10"
+          style={{
+            background:
+              "radial-gradient(ellipse at center, rgba(255,255,255,0.075) 0%, rgba(255,255,255,0.03) 35%, transparent 70%)",
+          }}
+        />
+
         <div className="relative z-20 flex-1 flex flex-col min-h-0">
           <HeroContent />
         </div>

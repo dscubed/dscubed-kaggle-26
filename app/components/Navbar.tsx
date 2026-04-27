@@ -163,14 +163,20 @@ function HamburgerButton({
 
 function ContactButton() {
   return (
-    <button
-      className="hidden sm:flex items-center gap-2 px-5 py-[10px] rounded-[4px] font-semibold text-[13px] text-black cursor-pointer"
-      style={{
-        background: "linear-gradient(135deg, #2ddb9b 0%, #159b6b 100%)",
-      }}
+    <Link
+      href="https://events.humanitix.com/dscubed-2026-kaggle-competition"
+      target="_blank"
+      rel="noopener noreferrer"
     >
-      Sign up
-    </button>
+      <button
+        className="hidden sm:flex items-center gap-2 px-5 py-[10px] rounded-[4px] font-semibold text-[13px] text-black cursor-pointer"
+        style={{
+          background: "linear-gradient(135deg, #2ddb9b 0%, #159b6b 100%)",
+        }}
+      >
+        Sign up
+      </button>
+    </Link>
   );
 }
 
