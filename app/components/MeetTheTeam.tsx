@@ -139,8 +139,9 @@ export default function MeetTheTeam() {
         Meet The Team
       </h2>
       <p className="text-[15px] text-[#c2cfc9] leading-[1.7] max-w-[640px] mb-10">
-        The traders behind the desk — your education crew designs the
-        curriculum, runs the workshops, and makes sure no one walks in cold.
+        Meet the DSCubed Education team. The team is responsible for designing
+        and delivering the workshops, mentoring competitors, and running the
+        competition day itself.
       </p>
 
       {/* Director — featured */}
@@ -161,23 +162,18 @@ export default function MeetTheTeam() {
         <div className="flex flex-col md:flex-row items-center gap-8 pt-6">
           <Avatar member={DIRECTOR} size="lg" />
           <div className="flex flex-col gap-2 text-center md:text-left">
-            <span
-              className="text-[10px] tracking-[3px] uppercase text-[#23d191]"
-              style={FONT_MONO}
-            >
-              {DIRECTOR.role}
-            </span>
             <h3
               className="text-4xl uppercase leading-[1] text-white"
               style={{ fontFamily: "var(--font-anton)" }}
             >
               {DIRECTOR.name}
             </h3>
-            <p className="text-[14px] text-[#c2cfc9] leading-[1.6] max-w-[520px]">
-              Stanley heads up DSCubed Education — shaping the workshop
-              syllabus, mentoring competitors, and making sure the Kaggle comp
-              runs smoothly.
-            </p>
+            <span
+              className="text-[10px] tracking-[3px] uppercase text-[#23d191]"
+              style={FONT_MONO}
+            >
+              {DIRECTOR.role}
+            </span>
           </div>
         </div>
       </div>

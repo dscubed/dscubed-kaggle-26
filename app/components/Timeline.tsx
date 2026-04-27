@@ -17,13 +17,13 @@ const EVENT_TIMELINE: Entry[] = [
   {
     start: "2026-05-01T17:00:00+10:00",
     end: "2026-05-01T19:00:00+10:00",
-    location: "Union House · Training Room",
+    location: "Alan Gilbert Building · L1-124",
     title: "Beginner Friendly Workshop",
   },
   {
     start: "2026-05-09T10:00:00+10:00",
     end: "2026-05-09T15:00:00+10:00",
-    location: "Melbourne Connect · L2",
+    location: "Arts West Building · Forum Theatre",
     title: "Competition Day",
   },
 ];
@@ -32,19 +32,19 @@ const COMPETITION_DAY: Entry[] = [
   {
     start: "2026-05-23T10:00:00+10:00",
     end: "2026-05-23T10:30:00+10:00",
-    location: "Arts West Building",
+    location: "Arts West Building · Forum Theatre",
     title: "Introductions · ML Processes + Dataset",
   },
   {
     start: "2026-05-23T10:30:00+10:00",
     end: "2026-05-23T12:30:00+10:00",
-    location: "Arts West Building",
+    location: "Arts West Building · Forum Theatre",
     title: "Coding Time · Build your models",
   },
   {
     start: "2026-05-23T12:30:00+10:00",
     end: "2026-05-23T13:00:00+10:00",
-    location: "Arts West Building",
+    location: "Arts West Building · Forum Theatre",
     title: "Closing Ceremony · Prizes & Awards",
   },
 ];
@@ -247,7 +247,10 @@ export default function Timeline() {
             {tab === "event" ? "EVENT_TIMELINE.FEED" : "COMP_DAY.FEED"}
           </span>
           <span className="text-white/40">
-            {entries.length} ENTRIES · SYNC {now === null ? "..." : "OK"}
+            {entries.length} ENTRIES{" "}
+            <span className="hidden sm:block">
+              · SYNC {now === null ? "..." : "OK"}
+            </span>
           </span>
         </div>
 
