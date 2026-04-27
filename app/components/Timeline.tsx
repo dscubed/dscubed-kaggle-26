@@ -149,36 +149,60 @@ function EntryRow({
   status: Status;
 }) {
   const dim = status === "CLOSED";
+  const border = last ? "" : "border-b border-white/5";
   return (
-    <div
-      className={`relative grid grid-cols-[110px_1fr_auto] items-center gap-6 py-5 ${
-        last ? "" : "border-b border-white/5"
-      } ${dim ? "opacity-40" : ""}`}
-    >
+    <>
+      {/* Mobile */}
       <div
-        className="flex flex-col leading-none border-l-2 border-[#23d191]/40 pl-3"
-        style={FONT_MONO}
+        className={`sm:hidden flex flex-col gap-2 py-4 ${border} ${dim ? "opacity-40" : ""}`}
       >
-        <span className="text-[18px] text-white tracking-[1px]">
-          {formatDate(entry.start)}
-        </span>
-        <span className="text-[11px] text-[#23d191] mt-1 tracking-[2px]">
-          {formatTime(entry.start)}
-        </span>
-      </div>
-
-      <div className="flex flex-col gap-1">
-        <span
-          className="text-[10px] tracking-[2px] uppercase text-white/40"
+        <div className="flex items-start justify-between gap-3">
+          <span className="text-[15px] text-white leading-snug flex-1">
+            {entry.title}
+          </span>
+          <StatusPill status={status} />
+        </div>
+        <div
+          className="flex flex-wrap items-center gap-x-2 gap-y-0.5 text-[10px] tracking-[1.5px] uppercase"
           style={FONT_MONO}
         >
-          ◆ {entry.location}
-        </span>
-        <span className="text-[17px] text-white">{entry.title}</span>
+          <span className="border-l-2 border-[#23d191]/40 pl-2 text-white tracking-[1px] text-[12px]">
+            {formatDate(entry.start)}
+          </span>
+          <span className="text-[#23d191]">{formatTime(entry.start)}</span>
+          <span className="text-white/40">◆ {entry.location}</span>
+        </div>
       </div>
 
-      <StatusPill status={status} />
-    </div>
+      {/* Desktop */}
+      <div
+        className={`hidden sm:grid sm:grid-cols-[110px_1fr_auto] sm:items-center gap-6 py-5 ${border} ${dim ? "opacity-40" : ""}`}
+      >
+        <div
+          className="flex flex-col leading-none border-l-2 border-[#23d191]/40 pl-3"
+          style={FONT_MONO}
+        >
+          <span className="text-[18px] text-white tracking-[1px]">
+            {formatDate(entry.start)}
+          </span>
+          <span className="text-[11px] text-[#23d191] mt-1 tracking-[2px]">
+            {formatTime(entry.start)}
+          </span>
+        </div>
+
+        <div className="flex flex-col gap-1">
+          <span
+            className="text-[10px] tracking-[2px] uppercase text-white/40"
+            style={FONT_MONO}
+          >
+            ◆ {entry.location}
+          </span>
+          <span className="text-[17px] text-white">{entry.title}</span>
+        </div>
+
+        <StatusPill status={status} />
+      </div>
+    </>
   );
 }
 
@@ -195,7 +219,10 @@ export default function Timeline() {
   const entries = tab === "event" ? EVENT_TIMELINE : COMPETITION_DAY;
 
   return (
-    <section id="timeline" className="relative max-w-400 mx-auto px-12 pb-32 w-full">
+    <section
+      id="timeline"
+      className="relative max-w-400 mx-auto px-5 md:px-12 pb-16 md:pb-32 w-full"
+    >
       <div className="flex items-center gap-3 mb-6">
         <span
           className="text-[11px] tracking-[3px] uppercase text-[#23d191]"
@@ -208,7 +235,7 @@ export default function Timeline() {
 
       <div className="flex items-end justify-between flex-wrap gap-6 mb-8">
         <h2
-          className="text-6xl leading-[0.95] uppercase text-white"
+          className="text-4xl md:text-6xl leading-[0.95] uppercase text-white"
           style={{ fontFamily: "var(--font-anton)" }}
         >
           Event Timeline
@@ -260,7 +287,7 @@ export default function Timeline() {
           </span>
         </div>
 
-        <div className="px-6">
+        <div className="px-4 sm:px-6">
           {entries.map((e, i) => (
             <EntryRow
               key={i}

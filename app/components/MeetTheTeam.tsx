@@ -101,7 +101,7 @@ function DiscordIcon({ className }: { className?: string }) {
 
 export default function MeetTheTeam() {
   return (
-    <section className="relative max-w-400 mx-auto px-12 pb-32 w-full">
+    <section className="relative max-w-400 mx-auto px-5 md:px-12 pb-16 md:pb-32 w-full">
       <div className="flex items-center gap-3 mb-6">
         <span
           className="text-[11px] tracking-[3px] uppercase text-[#23d191]"
@@ -113,7 +113,7 @@ export default function MeetTheTeam() {
       </div>
 
       <h2
-        className="text-6xl leading-[0.95] uppercase text-white mb-4"
+        className="text-4xl md:text-6xl leading-[0.95] uppercase text-white mb-4"
         style={{ fontFamily: "var(--font-anton)" }}
       >
         Meet The Team
@@ -125,7 +125,7 @@ export default function MeetTheTeam() {
 
       {/* Director — featured */}
       <div
-        className="relative rounded-md border border-[#23d191]/30 bg-[#02120a]/85 p-8 mb-6 shadow-[0_0_40px_rgba(35,209,145,0.08)_inset,0_0_60px_rgba(0,0,0,0.5)] overflow-hidden"
+        className="relative rounded-md border border-[#23d191]/30 bg-[#02120a]/85 p-5 sm:p-8 mb-6 shadow-[0_0_40px_rgba(35,209,145,0.08)_inset,0_0_60px_rgba(0,0,0,0.5)] overflow-hidden"
         style={{
           backgroundImage:
             "repeating-linear-gradient(0deg, rgba(35,209,145,0.04) 0px, rgba(35,209,145,0.04) 1px, transparent 1px, transparent 3px)",
@@ -163,7 +163,7 @@ export default function MeetTheTeam() {
       </div>
 
       {/* Officers grid */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-10">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4 mb-10">
         {OFFICERS.map((o) => (
           <OfficerCard key={o.name} member={o} />
         ))}
@@ -174,7 +174,7 @@ export default function MeetTheTeam() {
         href={DISCORD_URL}
         target="_blank"
         rel="noreferrer"
-        className="relative flex flex-col sm:flex-row items-center justify-between gap-4 rounded-md border border-[#23d191]/30 bg-[#02120a]/85 px-8 py-6 overflow-hidden group hover:border-[#23d191]/60 transition-colors shadow-[0_0_40px_rgba(35,209,145,0.06)_inset]"
+        className="relative flex flex-col sm:flex-row items-center justify-between gap-4 rounded-md border border-[#23d191]/30 bg-[#02120a]/85 px-5 sm:px-8 py-6 overflow-hidden group hover:border-[#23d191]/60 transition-colors shadow-[0_0_40px_rgba(35,209,145,0.06)_inset]"
         style={{
           backgroundImage:
             "repeating-linear-gradient(0deg, rgba(35,209,145,0.03) 0px, rgba(35,209,145,0.03) 1px, transparent 1px, transparent 3px)",

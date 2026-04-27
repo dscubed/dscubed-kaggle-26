@@ -89,42 +89,18 @@ function BatteryIcon() {
 
 type Row = {
   rank: number;
-  team: string[];
-  score: number;
-  profit: number;
+  team: string[] | null;
+  score: number | null;
+  profit: number | null;
   prize: number | null;
 };
 
 const ROWS: Row[] = [
-  {
-    rank: 1,
-    team: ["A. Nakamura", "J. Patel"],
-    score: 0.9421,
-    profit: 18420.55,
-    prize: 200,
-  },
-  { rank: 2, team: ["L. Okafor"], score: 0.9188, profit: 15233.1, prize: 150 },
-  {
-    rank: 3,
-    team: ["M. Chen", "S. Rossi", "K. Dubois"],
-    score: 0.9042,
-    profit: 13988.72,
-    prize: 100,
-  },
-  {
-    rank: 4,
-    team: ["R. Ahmed", "T. Volkov"],
-    score: 0.8876,
-    profit: 11204.3,
-    prize: null,
-  },
-  {
-    rank: 5,
-    team: ["E. Bianchi"],
-    score: 0.8731,
-    profit: 9876.44,
-    prize: null,
-  },
+  { rank: 1, team: null, score: null, profit: null, prize: 200 },
+  { rank: 2, team: null, score: null, profit: null, prize: 150 },
+  { rank: 3, team: null, score: null, profit: null, prize: 100 },
+  { rank: 4, team: null, score: null, profit: null, prize: null },
+  { rank: 5, team: null, score: null, profit: null, prize: null },
 ];
 
 const FONT_MONO = { fontFamily: "var(--font-mono)" };
@@ -136,10 +112,18 @@ function fmt(n: number, dp = 2) {
   });
 }
 
-function TeamCell({ members }: { members: string[] }) {
+function TeamCell({ members }: { members: string[] | null }) {
+  if (!members) {
+    return <span className="text-white/30 italic">TBD</span>;
+  }
   return (
     <div className="flex flex-col leading-tight">
-      <span className="text-white">{members.join(" · ")}</span>
+      <span className="text-white hidden md:inline">{members.join(" · ")}</span>
+      <span className="md:hidden text-white flex flex-col">
+        {members.map((m) => (
+          <span key={m}>{m}</span>
+        ))}
+      </span>
     </div>
   );
 }
@@ -149,30 +133,59 @@ function LeaderboardRow({ row }: { row: Row }) {
   const tone = isWinner ? "text-[#23d191]" : "text-[#c2cfc9]";
   const flash = row.rank === 1 ? "bg-[#23d191]/[0.04]" : "";
   return (
-    <div
-      className={`grid grid-cols-[50px_1fr_120px_140px_120px] items-center gap-4 px-5 py-3 border-b border-white/5 ${flash} hover:bg-white/[0.02] transition-colors`}
-      style={FONT_MONO}
-    >
-      <span className={`text-[13px] ${tone}`}>
-        {String(row.rank).padStart(2, "0")}
-      </span>
-      <span className="text-[13px]">
-        <TeamCell members={row.team} />
-      </span>
-      <span className={`text-[13px] text-right tabular-nums ${tone}`}>
-        {fmt(row.score, 4)}
-      </span>
-      <span className="text-[13px] text-right tabular-nums text-[#23d191]">
-        +${fmt(row.profit)}
-      </span>
-      <span
-        className={`text-[13px] text-right tabular-nums ${
-          isWinner ? "text-white" : "text-white/20"
-        }`}
+    <>
+      {/* Desktop row */}
+      <div
+        className={`hidden md:grid grid-cols-[50px_1fr_120px_140px_120px] items-center gap-4 px-5 py-3 border-b border-white/5 ${flash} hover:bg-white/[0.02] transition-colors`}
+        style={FONT_MONO}
       >
-        {row.prize !== null ? `$${row.prize}.00` : "—"}
-      </span>
-    </div>
+        <span className={`text-[13px] ${tone}`}>
+          {String(row.rank).padStart(2, "0")}
+        </span>
+        <span className="text-[13px]">
+          <TeamCell members={row.team} />
+        </span>
+        <span className={`text-[13px] text-right tabular-nums ${tone}`}>
+          {row.score !== null ? fmt(row.score, 4) : "—"}
+        </span>
+        <span className="text-[13px] text-right tabular-nums text-[#23d191]">
+          {row.profit !== null ? `+$${fmt(row.profit)}` : "—"}
+        </span>
+        <span
+          className={`text-[13px] text-right tabular-nums ${
+            isWinner ? "text-white" : "text-white/20"
+          }`}
+        >
+          {row.prize !== null ? `$${row.prize}.00` : "—"}
+        </span>
+      </div>
+
+      {/* Mobile row — columnar */}
+      <div
+        className={`md:hidden grid grid-cols-[20px_1fr_48px_72px_36px] items-start gap-x-2 gap-y-0 px-4 py-3 border-b border-white/5 ${flash}`}
+        style={FONT_MONO}
+      >
+        <span className={`text-[11px] ${tone} tabular-nums pt-0.5`}>
+          {String(row.rank).padStart(2, "0")}
+        </span>
+        <span className="text-[11px]">
+          <TeamCell members={row.team} />
+        </span>
+        <span className={`text-[11px] tabular-nums ${tone}`}>
+          {row.score !== null ? fmt(row.score, 4) : "—"}
+        </span>
+        <span className="text-[11px] tabular-nums text-[#23d191]">
+          {row.profit !== null ? `+$${fmt(row.profit)}` : "—"}
+        </span>
+        <span
+          className={`text-[11px] tabular-nums text-center ${
+            isWinner ? "text-white" : "text-white/20"
+          }`}
+        >
+          {row.prize !== null ? `$${row.prize}` : "—"}
+        </span>
+      </div>
+    </>
   );
 }
 
@@ -230,7 +243,10 @@ function TickerStrip() {
 export default function Leaderboard() {
   const utc = useUtcClock();
   return (
-    <section id="prizes" className="relative max-w-400 mx-auto px-12 pb-32 w-full">
+    <section
+      id="prizes"
+      className="relative max-w-400 mx-auto px-5 md:px-12 pb-16 md:pb-32 w-full"
+    >
       <div className="flex items-center gap-3 mb-6">
         <span
           className="text-[11px] tracking-[3px] uppercase text-[#23d191]"
@@ -242,7 +258,7 @@ export default function Leaderboard() {
       </div>
 
       <h2
-        className="text-6xl leading-[0.95] uppercase text-white mb-8"
+        className="text-4xl md:text-6xl leading-[0.95] uppercase text-white mb-8"
         style={{ fontFamily: "var(--font-anton)" }}
       >
         Prizes & Leaderboard
@@ -267,8 +283,10 @@ export default function Leaderboard() {
               <span className="relative inline-flex h-2 w-2 rounded-full bg-[#23d191]" />
             </span>
             <span className="text-[#23d191]">LIVE</span>
-            <span className="text-white/30">·</span>
-            <span className="text-white/50">DSCUBED::KAGGLE/26</span>
+            <span className="text-white/30 hidden sm:inline">·</span>
+            <span className="text-white/50 hidden sm:inline">
+              DSCUBED::KAGGLE/26
+            </span>
           </div>
           <div className="flex items-center gap-3">
             <NoWifiIcon />
@@ -278,9 +296,9 @@ export default function Leaderboard() {
 
         <TickerStrip />
 
-        {/* Column headers */}
+        {/* Column headers — desktop */}
         <div
-          className="grid grid-cols-[50px_1fr_120px_140px_120px] items-center gap-4 px-5 py-2 border-b border-white/10 text-[10px] tracking-[2px] uppercase text-white/40"
+          className="hidden md:grid grid-cols-[50px_1fr_120px_140px_120px] items-center gap-4 px-5 py-2 border-b border-white/10 text-[10px] tracking-[2px] uppercase text-white/40"
           style={FONT_MONO}
         >
           <span>#</span>
@@ -288,6 +306,17 @@ export default function Leaderboard() {
           <span className="text-right">Score</span>
           <span className="text-right">Profit (USD)</span>
           <span className="text-right">Prize</span>
+        </div>
+        {/* Column headers — mobile */}
+        <div
+          className="md:hidden grid grid-cols-[20px_1fr_48px_72px_36px] items-center gap-x-2 px-4 py-2 border-b border-white/10 text-[10px] tracking-[2px] uppercase text-white/40"
+          style={FONT_MONO}
+        >
+          <span>#</span>
+          <span>Team</span>
+          <span>Score</span>
+          <span>Profit</span>
+          <span className="text-center">Prize</span>
         </div>
 
         {/* Rows */}

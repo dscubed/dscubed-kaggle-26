@@ -237,6 +237,17 @@ export default function StockChart() {
   const [chart, setChart] = useState<ChartState>(INITIAL_CHART);
   const chartRef = useRef<ChartState>(chart);
 
+  // Mobile-only layout tweaks: extend wrapper left and anchor SVG bottom-right
+  // so the chart doesn't hard-clip on tall narrow viewports. Desktop unchanged.
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 767px)");
+    setIsMobile(mq.matches);
+    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, []);
+
   // view lives entirely in a ref — camera never triggers React re-renders
   const viewRef = useRef<ViewState>(INITIAL_VIEW);
 
@@ -318,9 +329,21 @@ export default function StockChart() {
 
         // Imperatively push path strings into DOM — skips React reconciler
         if (pathLineARef.current && pathAreaARef.current)
-          writePaths(a, newMin, newMax, pathLineARef.current, pathAreaARef.current);
+          writePaths(
+            a,
+            newMin,
+            newMax,
+            pathLineARef.current,
+            pathAreaARef.current,
+          );
         if (pathLineBRef.current && pathAreaBRef.current)
-          writePaths(b, newMin, newMax, pathLineBRef.current, pathAreaBRef.current);
+          writePaths(
+            b,
+            newMin,
+            newMax,
+            pathLineBRef.current,
+            pathAreaBRef.current,
+          );
       }
 
       rafId = requestAnimationFrame(tick);
@@ -360,7 +383,9 @@ export default function StockChart() {
 
   return (
     <div
-      className="absolute inset-0 pointer-events-none"
+      className={`absolute pointer-events-none ${
+        isMobile ? "-left-[30%] right-0 inset-y-0" : "inset-0"
+      }`}
       style={{
         filter: CHART_BLUR,
         transform: `perspective(${CHART_PERSPECTIVE}) rotateX(${CHART_ROT_X}deg) rotateY(${CHART_ROT_Y}deg) scale(${CHART_SCALE})`,
@@ -372,7 +397,7 @@ export default function StockChart() {
         viewBox={`0 0 ${SVG_W} ${SVG_H}`}
         width="100%"
         height="100%"
-        preserveAspectRatio="xMidYMid slice"
+        preserveAspectRatio={isMobile ? "xMaxYMax slice" : "xMaxYMid slice"}
       >
         <defs>
           <linearGradient id="gradB" x1="0" y1="0" x2="0" y2="1">

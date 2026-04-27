@@ -14,6 +14,15 @@
   --font-mono:    var(--font-jetbrains);
 }
 
+/* ─── Utilities ──────────────────────────────────────────────────────────── */
+.header-gradient {
+  background: linear-gradient(135deg, #4ade80 0%, #23d191 45%, #128258 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
 /* ─── Base ────────────────────────────────────────────────────────────────── */
 body {
   font-family: var(--font-sans), sans-serif;

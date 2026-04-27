@@ -25,7 +25,7 @@ export default function Home() {
   return (
     <>
       <Navbar />
-      <div className="relative flex flex-col h-screen max-w-400 mx-auto overflow-hidden">
+      <div className="relative flex flex-col h-screen max-w-400 mx-auto overflow-hidden" id="hero">
         {/* Animated chart inside elliptical radial-gradient mask window */}
         <div
           className="absolute inset-0 pointer-events-none"

@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 const NAV_LINKS = [
-  { label: "Theme", href: "#theme" },
+  { label: "About", href: "#about" },
   { label: "Prizes", href: "#prizes" },
   { label: "Timeline", href: "#timeline" },
   { label: "Workshops", href: "#workshops" },
@@ -25,7 +25,7 @@ function useActiveSection() {
         ([entry]) => {
           if (entry.isIntersecting) setActive(id);
         },
-        { rootMargin: "-40% 0px -55% 0px", threshold: 0 }
+        { rootMargin: "-40% 0px -55% 0px", threshold: 0 },
       );
       obs.observe(el);
       observers.push(obs);
@@ -66,7 +66,7 @@ function Logo() {
 
 function NavLinks({ active }: { active: string }) {
   return (
-    <nav className="flex gap-8">
+    <nav className="hidden md:flex gap-8">
       {NAV_LINKS.map(({ label, href }) => {
         const id = href.slice(1);
         const isActive = active === id;
@@ -91,10 +91,80 @@ function NavLinks({ active }: { active: string }) {
   );
 }
 
+function MobileMenu({
+  open,
+  onClose,
+  active,
+}: {
+  open: boolean;
+  onClose: () => void;
+  active: string;
+}) {
+  if (!open) return null;
+  return (
+    <div className="fixed inset-0 z-[60] md:hidden">
+      <div
+        className="absolute inset-0 bg-black/80 backdrop-blur-md"
+        onClick={onClose}
+      />
+      <nav className="relative z-10 flex flex-col gap-6 p-8 pt-20">
+        {NAV_LINKS.map(({ label, href }) => {
+          const id = href.slice(1);
+          const isActive = active === id;
+          return (
+            <a
+              key={label}
+              href={href}
+              onClick={onClose}
+              className={`text-2xl font-medium tracking-[2px] uppercase ${
+                isActive ? "text-[#23d191]" : "text-white"
+              }`}
+            >
+              {label}
+            </a>
+          );
+        })}
+      </nav>
+    </div>
+  );
+}
+
+function HamburgerButton({
+  open,
+  onClick,
+}: {
+  open: boolean;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      onClick={onClick}
+      className="md:hidden flex flex-col justify-center items-center gap-1.5 h-8 w-8 cursor-pointer"
+      aria-label="Toggle menu"
+    >
+      <span
+        className={`block h-[1.5px] w-5 bg-white transition-transform duration-200 ${
+          open ? "translate-y-[4.5px] rotate-45" : ""
+        }`}
+      />
+      <span
+        className={`block h-[1.5px] w-5 bg-white transition-opacity duration-200 ${
+          open ? "opacity-0" : ""
+        }`}
+      />
+      <span
+        className={`block h-[1.5px] w-5 bg-white transition-transform duration-200 ${
+          open ? "-translate-y-[4.5px] -rotate-45" : ""
+        }`}
+      />
+    </button>
+  );
+}
+
 function ContactButton() {
   return (
     <button
-      className="flex items-center gap-2 px-5 py-[10px] rounded-[4px] font-semibold text-[13px] text-black cursor-pointer"
+      className="hidden sm:flex items-center gap-2 px-5 py-[10px] rounded-[4px] font-semibold text-[13px] text-black cursor-pointer"
       style={{
         background: "linear-gradient(135deg, #2ddb9b 0%, #159b6b 100%)",
       }}
@@ -104,15 +174,56 @@ function ContactButton() {
   );
 }
 
+function useScrolled(threshold = 10) {
+  const [scrolled, setScrolled] = useState(false);
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > threshold);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [threshold]);
+  return scrolled;
+}
+
 export default function Navbar() {
   const active = useActiveSection();
+  const scrolled = useScrolled();
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  useEffect(() => {
+    if (menuOpen) document.body.style.overflow = "hidden";
+    else document.body.style.overflow = "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [menuOpen]);
+
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 flex justify-between items-center py-4.5 border-b border-white/5 backdrop-blur-xl px-12 bg-black/20">
-      <div className="flex items-center gap-12">
-        <Logo />
-        <NavLinks active={active} />
-      </div>
-      <ContactButton />
-    </header>
+    <>
+      <header
+        className={`fixed top-0 left-0 right-0 z-50 flex justify-between items-center py-4.5 border-b px-5 md:px-12 transition-all duration-300 ${
+          scrolled
+            ? "bg-black/20 backdrop-blur-md border-white/10"
+            : "bg-transparent border-transparent"
+        }`}
+      >
+        <div className="flex items-center gap-12">
+          <Logo />
+          <NavLinks active={active} />
+        </div>
+        <div className="flex items-center gap-4">
+          <ContactButton />
+          <HamburgerButton
+            open={menuOpen}
+            onClick={() => setMenuOpen(!menuOpen)}
+          />
+        </div>
+      </header>
+      <MobileMenu
+        open={menuOpen}
+        onClose={() => setMenuOpen(false)}
+        active={active}
+      />
+    </>
   );
 }

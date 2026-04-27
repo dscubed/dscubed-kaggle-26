@@ -4,16 +4,16 @@ function Heading() {
   return (
     <div className="flex flex-col items-center mt-6 gap-4">
       <div className="flex gap-2">
-        <img src="/kaggle.svg" alt="Logo" className="h-8 inline-block" />
-        <span className="text-2xl font-medium">COMPETITION</span>
+        <img src="/kaggle.svg" alt="Logo" className="h-6 sm:h-8 inline-block" />
+        <span className="text-lg sm:text-2xl font-medium">COMPETITION</span>
       </div>
       <h1
-        className="text-8xl leading-[0.9] uppercase text-white"
+        className="text-6xl sm:text-7xl md:text-8xl leading-[0.9] uppercase text-white"
         style={{ fontFamily: "var(--font-anton)" }}
       >
-        Predict The
+        Stock Market
         <br />
-        Market
+        <span className="header-gradient">Prediction</span>
       </h1>
     </div>
   );
@@ -43,7 +43,7 @@ function CTAButton() {
 
 export default function HeroContent() {
   return (
-    <main className="relative flex-1 flex flex-col items-center text-center px-12 py-4">
+    <main className="relative flex-1 flex flex-col items-center text-center px-5 md:px-12 py-4">
       {/* Vignette — keeps text readable against the chart */}
       <div
         className="absolute inset-0 pointer-events-none"

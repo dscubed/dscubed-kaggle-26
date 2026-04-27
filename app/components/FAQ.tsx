@@ -55,7 +55,7 @@ function FaqItem({
     >
       <button
         onClick={onToggle}
-        className="w-full flex items-center gap-4 px-6 py-5 text-left cursor-pointer group"
+        className="w-full flex items-center gap-3 sm:gap-4 px-4 sm:px-6 py-4 sm:py-5 text-left cursor-pointer group"
       >
         <span
           className="text-[11px] tracking-[2px] text-[#23d191]/70 w-10 shrink-0"
@@ -83,7 +83,7 @@ function FaqItem({
         }`}
       >
         <div className="overflow-hidden">
-          <div className="flex gap-4 px-6 pb-5">
+          <div className="flex gap-3 sm:gap-4 px-4 sm:px-6 pb-5">
             <span
               className="text-[11px] tracking-[2px] text-[#23d191]/70 w-10 shrink-0"
               style={FONT_MONO}
@@ -104,7 +104,7 @@ export default function FAQ() {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
-    <section className="relative max-w-400 mx-auto px-12 pb-32 w-full">
+    <section className="relative max-w-400 mx-auto px-5 md:px-12 pb-16 md:pb-32 w-full">
       <div className="flex items-center gap-3 mb-6">
         <span
           className="text-[11px] tracking-[3px] uppercase text-[#23d191]"
@@ -117,7 +117,7 @@ export default function FAQ() {
 
       <div className="flex items-end justify-between flex-wrap gap-6 mb-8">
         <h2
-          className="text-6xl leading-[0.95] uppercase text-white"
+          className="text-4xl md:text-6xl leading-[0.95] uppercase text-white"
           style={{ fontFamily: "var(--font-anton)" }}
         >
           Frequently
