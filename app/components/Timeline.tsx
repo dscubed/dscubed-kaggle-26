@@ -206,7 +206,7 @@ export default function Timeline() {
         </h2>
 
         <div
-          className="w-full inline-flex border border-[#23d191]/25 rounded-sm bg-black/40 p-1"
+          className="inline-flex border border-[#23d191]/25 rounded-sm bg-black/40 p-1"
           style={FONT_MONO}
         >
           <button
