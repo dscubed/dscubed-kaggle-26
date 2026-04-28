@@ -13,21 +13,11 @@ type Workshop = {
 const WORKSHOPS: Workshop[] = [
   {
     index: 1,
-    title: "Exploratory Data Analysis",
+    title: "Beginner-Friendly Workshop",
     description:
-      "Dig into market data — clean it, visualise it, and surface the signals that actually move prices before you feed them into a model.",
-    date: "24 April 2026",
-    time: "5:30 — 7:30 pm",
-    youtubeId: null,
-    slidesUrl: null,
-  },
-  {
-    index: 2,
-    title: "Model Building & Evaluation",
-    description:
-      "Build, benchmark, and backtest candidate models. Learn how to evaluate predictions against real profit curves instead of just accuracy.",
-    date: "8 May 2026",
-    time: "6:00 — 8:00 pm",
+      "Kickstart your data science journey with our beginner-friendly workshop! This session is designed for those new to the field, covering essential concepts and tools to get you up and running.",
+    date: "9 May 2026",
+    time: "5:00 — 7:00 pm",
     youtubeId: null,
     slidesUrl: null,
   },
@@ -119,7 +109,7 @@ function DownloadSlides({ url }: { url: string | null }) {
 function WorkshopCard({ workshop }: { workshop: Workshop }) {
   return (
     <div
-      className="relative flex flex-col gap-5 rounded-md border border-[#20beff]/25 bg-[#020d1a]/85 p-6 shadow-[0_0_40px_rgba(32,190,255,0.06)_inset,0_0_60px_rgba(0,0,0,0.5)] overflow-hidden"
+      className="relative flex flex-col gap-5 rounded-md border border-[#20beff]/25 bg-[#020d1a]/85 p-6 shadow-[0_0_40px_rgba(32,190,255,0.06)_inset,0_0_60px_rgba(0,0,0,0.5)] overflow-hidden max-w-lg"
       style={{
         backgroundImage:
           "repeating-linear-gradient(0deg, rgba(32,190,255,0.03) 0px, rgba(32,190,255,0.03) 1px, transparent 1px, transparent 3px)",
@@ -189,15 +179,15 @@ export default function Workshops() {
         className="text-4xl md:text-6xl leading-[0.95] uppercase text-white mb-4"
         style={{ fontFamily: "var(--font-anton)" }}
       >
-        Workshops
+        Workshop
       </h2>
       <p className="text-[15px] text-[#c2cfc9] leading-[1.7] max-w-[640px] mb-10">
-        Unlock your potential with our guided workshops! Missed the session? We
+        Unlock your potential with our guided workshop! Missed the session? We
         release the slides and recordings after each workshop so you can catch
         up.
       </p>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid w-full flex justify-center">
         {WORKSHOPS.map((w) => (
           <WorkshopCard key={w.index} workshop={w} />
         ))}

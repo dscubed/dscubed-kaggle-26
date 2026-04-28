@@ -17,6 +17,7 @@ const FAQS: QA[] = [
     a: "Nope. Our workshops are designed for beginners and will cover all the ML basics you need to get going. We also have Education Officers on hand during the comp to help out with any questions you have.",
   },
   {
+    // TODO: confirm this answer again with education.
     q: "How are teams scored?",
     a: "Submissions are ranked on a held-out test set using a combination of prediction score and simulated trading profit.",
   },
