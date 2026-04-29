@@ -14,19 +14,59 @@ function useUtcClock() {
 
 function WifiIcon() {
   return (
-    <svg width="16" height="14" viewBox="0 0 16 14" fill="none" className="opacity-80">
+    <svg
+      width="16"
+      height="14"
+      viewBox="0 0 16 14"
+      fill="none"
+      className="opacity-80"
+    >
       <path d="M8 10.5a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" fill="#20beff" />
-      <path d="M5.17 8.17a4 4 0 0 1 5.66 0" stroke="#20beff" strokeWidth="1.2" strokeLinecap="round" opacity="0.75" />
-      <path d="M2.93 5.93a7 7 0 0 1 10.14 0" stroke="#20beff" strokeWidth="1.2" strokeLinecap="round" opacity="0.45" />
+      <path
+        d="M5.17 8.17a4 4 0 0 1 5.66 0"
+        stroke="#20beff"
+        strokeWidth="1.2"
+        strokeLinecap="round"
+        opacity="0.75"
+      />
+      <path
+        d="M2.93 5.93a7 7 0 0 1 10.14 0"
+        stroke="#20beff"
+        strokeWidth="1.2"
+        strokeLinecap="round"
+        opacity="0.45"
+      />
     </svg>
   );
 }
 
 function BatteryIcon() {
   return (
-    <svg width="22" height="12" viewBox="0 0 22 12" fill="none" className="opacity-80">
-      <rect x="0.5" y="0.5" width="18" height="11" rx="2" stroke="#20beff" strokeWidth="1" />
-      <rect x="19" y="3.5" width="2.5" height="5" rx="1" fill="#20beff" opacity="0.6" />
+    <svg
+      width="22"
+      height="12"
+      viewBox="0 0 22 12"
+      fill="none"
+      className="opacity-80"
+    >
+      <rect
+        x="0.5"
+        y="0.5"
+        width="18"
+        height="11"
+        rx="2"
+        stroke="#20beff"
+        strokeWidth="1"
+      />
+      <rect
+        x="19"
+        y="3.5"
+        width="2.5"
+        height="5"
+        rx="1"
+        fill="#20beff"
+        opacity="0.6"
+      />
       <rect x="2" y="2" width="14" height="8" rx="1" fill="#20beff" />
     </svg>
   );
@@ -41,9 +81,9 @@ type Row = {
 };
 
 const ROWS: Row[] = [
-  { rank: 1, team: null, score: null, profit: null, prize: 200 },
-  { rank: 2, team: null, score: null, profit: null, prize: 150 },
-  { rank: 3, team: null, score: null, profit: null, prize: 100 },
+  { rank: 1, team: null, score: null, profit: null, prize: 400 },
+  { rank: 2, team: null, score: null, profit: null, prize: 300 },
+  { rank: 3, team: null, score: null, profit: null, prize: 150 },
   { rank: 4, team: null, score: null, profit: null, prize: null },
   { rank: 5, team: null, score: null, profit: null, prize: null },
 ];
