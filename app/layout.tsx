@@ -84,10 +84,12 @@ export default function RootLayout({
       lang="en"
       className={`${inter.variable} ${anton.variable} ${jetbrainsMono.variable}`}
     >
-      <body>{children}</body>
-      {process.env.NEXT_PUBLIC_GA_ID && (
-        <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />
-      )}
+      <body>
+        {children}
+        {process.env.NEXT_PUBLIC_GA_ID && (
+          <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />
+        )}
+      </body>
     </html>
   );
 }
