@@ -30,20 +30,32 @@ const EVENT_TIMELINE: Entry[] = [
 
 const COMPETITION_DAY: Entry[] = [
   {
-    start: "2026-05-09T10:00:00+10:00",
-    end: "2026-05-09T10:30:00+10:00",
+    start: "2026-05-09T10:30:00+10:00",
+    end: "2026-05-09T11:00:00+10:00",
     location: "Arts West Building · Forum Theatre",
-    title: "Introductions · ML Processes + Dataset",
+    title: "Team Registration & Setup",
   },
   {
     start: "2026-05-09T10:30:00+10:00",
-    end: "2026-05-09T12:30:00+10:00",
+    end: "2026-05-09T11:00:00+10:00",
+    location: "Arts West Building · Forum Theatre",
+    title: "Introduction · Welcome + Datasets Presentation",
+  },
+  {
+    start: "2026-05-09T11:00:00+10:00",
+    end: "2026-05-09T14:00:00+10:00",
     location: "Arts West Building · Forum Theatre",
     title: "Coding Time · Build your models",
   },
   {
-    start: "2026-05-09T12:30:00+10:00",
-    end: "2026-05-09T13:00:00+10:00",
+    start: "2026-05-09T14:00:00+10:00",
+    end: "2026-05-09T14:30:00+10:00",
+    location: "Arts West Building · Forum Theatre",
+    title: "Judging Time · Food & Networking",
+  },
+  {
+    start: "2026-05-09T14:30:00+10:00",
+    end: "2026-05-09T14:30:00+10:00",
     location: "Arts West Building · Forum Theatre",
     title: "Closing Ceremony · Prizes & Awards",
   },

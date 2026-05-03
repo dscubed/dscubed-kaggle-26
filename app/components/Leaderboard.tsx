@@ -320,7 +320,7 @@ export default function Leaderboard() {
         >
           <span className="text-white/30">PAGE 01 / 01</span>
           <div className="flex items-center gap-2 text-white/40">
-            <span>SESSION 04</span>
+            <span className="hidden sm:block">SESSION 04</span>
             <span className="text-white/20">·</span>
             <span className="tabular-nums text-[#20beff]/70">UTC {utc}</span>
           </div>

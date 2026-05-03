@@ -294,7 +294,7 @@ export default function About() {
   return (
     <section
       id="about"
-      className="relative flex flex-col gap-4 max-w-400 mx-auto px-5 md:px-12 py-12 md:py-24 w-full"
+      className="relative flex flex-col gap-4 max-w-400 mx-auto px-5 md:px-12 pb-12 md:pb-24 pt-6 md:pt-10 w-full"
     >
       <div className="flex items-center gap-3 mb-10">
         <span

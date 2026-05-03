@@ -2,7 +2,7 @@ import Navbar from "./components/Navbar";
 import HeroContent from "./components/HeroContent";
 import StockChart from "./components/StockChart";
 import About from "./components/About";
-import Leaderboard from "./components/Leaderboard";
+import Prizes from "./components/Prizes";
 import Timeline from "./components/Timeline";
 import Workshops from "./components/Workshops";
 import FAQ from "./components/FAQ";
@@ -81,13 +81,54 @@ export default function Home() {
           <HeroContent />
         </div>
       </div>
+
+      <Sponsors />
+
       <About />
-      <Leaderboard />
+      <Prizes />
       <Timeline />
       <Workshops />
       <MeetTheTeam />
       <FAQ />
       <Footer />
+    </div>
+  );
+}
+
+function Sponsors() {
+  return (
+    <div className="max-w-400 mx-auto px-5 md:px-12 py-8 md:py-12 w-full flex justify-center">
+      <div
+        className="rounded-md border border-[#20beff]/20 hover:border-[#20beff]/40 transition-all overflow-hidden w-fit"
+        style={{
+          background: "rgba(2,13,26,0.8)",
+          backgroundImage:
+            "repeating-linear-gradient(0deg, rgba(32,190,255,0.03) 0px, rgba(32,190,255,0.03) 1px, transparent 1px, transparent 3px)",
+          boxShadow:
+            "0 0 40px rgba(32,190,255,0.08) inset, 0 0 60px rgba(32,190,255,0.06), 0 0 120px rgba(32,190,255,0.04)",
+        }}
+      >
+        <div className="flex flex-col items-center gap-5 md:gap-6 px-8 py-8 md:py-10">
+          <span
+            className="text-sm md:text-base tracking-[3px] uppercase text-[#20beff]"
+            style={{ fontFamily: "var(--font-mono)" }}
+          >
+            SPONSORED BY
+          </span>
+          <div className="flex items-center gap-10 md:gap-16">
+            <img
+              src="/janestreet-logo.svg"
+              alt="Jane Street"
+              className="h-7 md:h-9 w-auto filter invert brightness-110 opacity-75 hover:opacity-100 transition-opacity"
+            />
+            <img
+              src="/imc-logo.svg"
+              alt="IMC"
+              className="h-7 md:h-9 w-auto filter saturate-0 brightness-200 opacity-75 hover:opacity-100 transition-opacity"
+            />
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
